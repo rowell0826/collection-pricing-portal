@@ -19,7 +19,9 @@ const NavBar = () => {
 				<Input alt="search" placeholder="Search artwork" className="rounded-lg" />
 			</div>
 			<div className="w-40 h-16 flex justify-center">
-				<Image src={barkerLogo} alt="barker logo" className="w-full h-full" />
+				<Link href={"/"}>
+					<Image src={barkerLogo} alt="barker logo" className="w-full h-full" />
+				</Link>
 			</div>
 			<div className="flex justify-between items-center gap-4">
 				<p>Make Comparables</p>
