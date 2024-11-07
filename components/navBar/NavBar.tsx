@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Input } from "../ui/input";
 import Image from "next/image";
@@ -16,7 +17,12 @@ const NavBar = () => {
 				<Link href={"/addArtWork"} className="w-[50%]">
 					<p>Add Artwork</p>
 				</Link>
-				<Input alt="search" placeholder="Search artwork" className="rounded-lg" />
+				<Input
+					alt="search"
+					placeholder="Search artwork"
+					className="rounded-lg"
+					onChange={searchArtWorks}
+				/>
 			</div>
 			<div className="w-40 h-16 flex justify-center">
 				<Link href={"/"}>
