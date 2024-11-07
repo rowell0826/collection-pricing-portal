@@ -10,7 +10,7 @@ const NavBar = () => {
 
 	return (
 		<nav
-			className="h-16 flex justify-evenly items-center gap-8
+			className="h-16 flex justify-evenly items-center gap-8 text-xs
         "
 		>
 			<div className="flex justify-evenly items-center gap-2">
