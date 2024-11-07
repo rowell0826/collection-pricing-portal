@@ -1,0 +1,17 @@
+{
+	"id": "",
+	"title": "",
+	"artist_name": "",
+	"artist_birth": "",
+	"date_of_creation": "",
+	"dimensions": {
+		"length": "",
+		"width": "",
+		"height": ""
+	},
+	"medium": "",
+	"sale_price": "",
+	"description": "",
+	"provenance": "",
+	"image_url": ["", "", ""]
+}
