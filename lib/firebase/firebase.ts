@@ -125,3 +125,5 @@ export const getUserDetails = async (userId: string) => {
 
 // Sign-out user
 export const signOutUser = async (): Promise<void> => await signOut(auth);
+
+// ---------------------------- Artwork Collection -----------------------------
