@@ -45,9 +45,6 @@ export const auth = getAuth();
 // Set-up firestore database
 export const db: Firestore = getFirestore(app);
 
-// Set-up firestore storage --> This is where we will store the folders and files.
-export const storage = getStorage();
-
 // Create db for newly registered users
 export const createUserDocumentFromAuth = async (userId: string, userDetails: UserDetails) => {
 	if (!userId) return;
@@ -107,7 +104,6 @@ export const signInAuthUserWithEmailAndPassword = async (email: string, password
 	return await signInWithEmailAndPassword(auth, email, password);
 };
 
-// Below are authentication functionalities used for the project mostly account sign-in and account sign-up
 export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
 
 // Get user details
