@@ -107,80 +107,75 @@ export default function SignInForm() {
 	};
 
 	return (
-		<main className="w-full h-screen flex flex-col items-center justify-center">
-			<section className="w-[50%] h-[80%] flex justify-center my-auto">
-				<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-w-80 max-h-max text-foreground">
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(handleSubmit)}
-							className="max-w-md w-full flex flex-col gap-4"
-						>
-							{formItemLabels.map(
-								(
-									{ labelText, placeHolderText, inputType, formDefaultValue },
-									idx
-								) => (
-									<FormField
-										key={idx}
-										control={form.control}
-										name={formDefaultValue as keyof z.infer<typeof formSchema>}
-										render={({ field }) => {
-											return (
-												<FormItem>
-													<FormLabel>{labelText}</FormLabel>
-													<FormControl>
-														<Input
-															placeholder={placeHolderText}
-															type={inputType}
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage>
-														{
-															form.formState.errors[
-																formDefaultValue as keyof z.infer<
-																	typeof formSchema
-																>
-															]?.message
-														}
-													</FormMessage>
-												</FormItem>
-											);
-										}}
-									/>
-								)
-							)}
+		<section className="w-full h-[70%] flex justify-center items-center my-auto">
+			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-w-80 max-h-max text-foreground">
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(handleSubmit)}
+						className="max-w-md w-full flex flex-col gap-4"
+					>
+						{formItemLabels.map(
+							({ labelText, placeHolderText, inputType, formDefaultValue }, idx) => (
+								<FormField
+									key={idx}
+									control={form.control}
+									name={formDefaultValue as keyof z.infer<typeof formSchema>}
+									render={({ field }) => {
+										return (
+											<FormItem>
+												<FormLabel>{labelText}</FormLabel>
+												<FormControl>
+													<Input
+														placeholder={placeHolderText}
+														type={inputType}
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage>
+													{
+														form.formState.errors[
+															formDefaultValue as keyof z.infer<
+																typeof formSchema
+															>
+														]?.message
+													}
+												</FormMessage>
+											</FormItem>
+										);
+									}}
+								/>
+							)
+						)}
 
-							<div className="flex flex-col justify-center items-center gap-4 text-foreground">
-								<Button type="submit" className="w-full" variant={"default"}>
-									Sign In
-								</Button>
-								<Button
-									type="button"
-									className="w-full border flex justify-center items-center gap-1 text-foreground"
-									variant={"secondary"}
-									onClick={handleGoogleSignIn}
-								>
-									<FcGoogle size={20} />
-									Sign In with Google
-								</Button>
-							</div>
+						<div className="flex flex-col justify-center items-center gap-4 text-foreground">
+							<Button type="submit" className="w-full" variant={"default"}>
+								Sign In
+							</Button>
+							<Button
+								type="button"
+								className="w-full border flex justify-center items-center gap-1 text-foreground"
+								variant={"secondary"}
+								onClick={handleGoogleSignIn}
+							>
+								<FcGoogle size={20} />
+								Sign In with Google
+							</Button>
+						</div>
 
-							<p className="text-[12px]">
-								<Link href="/signin/passwordReset" className="text-cyan-900">
-									Forgot Password?
-								</Link>
-							</p>
+						<p className="text-[12px]">
+							<Link href="/signin/passwordReset" className="text-cyan-900">
+								Forgot Password?
+							</Link>
+						</p>
 
-							<p className="text-[12px]">
-								<Link href="/signup" className="text-cyan-900">
-									Register here
-								</Link>{" "}
-							</p>
-						</form>
-					</Form>
-				</div>
-			</section>
-		</main>
+						<p className="text-[12px]">
+							<Link href="/signup" className="text-cyan-900">
+								Register here
+							</Link>{" "}
+						</p>
+					</form>
+				</Form>
+			</div>
+		</section>
 	);
 }
