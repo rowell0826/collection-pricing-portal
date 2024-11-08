@@ -16,8 +16,8 @@ const formSchema = z.object({
 	artist_full_name: z
 		.string()
 		.min(6, { message: "Artist name must be at least 6 characters long" }),
-	artist_birth: z.number().max(4).optional(),
-	date_of_creation: z.number().max(4).optional(),
+	artist_birth: z.number().optional(),
+	date_of_creation: z.number().optional(),
 	medium: z.string(),
 	description: z.string(),
 	provenance: z.string(),
@@ -50,10 +50,10 @@ const formItemLabels: FormItems[] = [
 		formDefaultValue: "artist_birth",
 	},
 	{
-		labelText: "Date of Creation",
+		labelText: "Year of Creation",
 		placeHolderText: "Select creation date",
 		inputType: "number",
-		formDefaultValue: "date_of_creation",
+		formDefaultValue: "year_of_creation",
 	},
 	{
 		labelText: "Medium",
@@ -215,7 +215,7 @@ const ArtworkForm = () => {
 							control={form.control}
 							name="artist_birth"
 							render={({ field }) => {
-								const displayValue = field.value;
+								const displayValue = field.value ?? 0;
 
 								return (
 									<FormItem className="col-span-1">
@@ -227,7 +227,9 @@ const ArtworkForm = () => {
 												value={Number(displayValue)}
 												min={1000}
 												max={2010}
-												onChange={(e) => field.onChange(e.target.value)}
+												onChange={(e) =>
+													field.onChange(Number(e.target.value))
+												}
 											/>
 										</FormControl>
 										<FormMessage>
@@ -245,7 +247,7 @@ const ArtworkForm = () => {
 							render={({ field }) => {
 								const currentYear = new Date().getFullYear();
 
-								const displayValue = field.value;
+								const displayValue = field.value ?? 0;
 
 								return (
 									<FormItem className="col-span-1">
@@ -257,7 +259,9 @@ const ArtworkForm = () => {
 												value={Number(displayValue)}
 												min={1000}
 												max={currentYear}
-												onChange={(e) => field.onChange(e.target.value)}
+												onChange={(e) =>
+													field.onChange(Number(e.target.value))
+												}
 											/>
 										</FormControl>
 										<FormMessage>
@@ -352,7 +356,7 @@ const ArtworkForm = () => {
 									control={form.control}
 									name={dimension as keyof z.infer<typeof formSchema>}
 									render={({ field }) => {
-										const displayValue = field.value;
+										const displayValue = field.value ?? 0;
 
 										return (
 											<FormItem>
@@ -368,7 +372,7 @@ const ArtworkForm = () => {
 														{...field}
 														value={Number(displayValue)}
 														onChange={(e) =>
-															field.onChange(e.target.value)
+															field.onChange(Number(e.target.value))
 														}
 													/>
 												</FormControl>
@@ -440,7 +444,7 @@ const ArtworkForm = () => {
 											placeholder={"Enter height"}
 											{...field}
 											value={Number(field.value)}
-											onChange={(e) => field.onChange(e.target.value)}
+											onChange={(e) => field.onChange(Number(e.target.value))}
 										/>
 									</FormControl>
 									<FormMessage>{form.formState.errors.area?.message}</FormMessage>
@@ -461,7 +465,10 @@ const ArtworkForm = () => {
 											placeholder={"Enter sale price"}
 											{...field}
 											value={Number(field.value)}
-											onChange={(e) => field.onChange(e.target.value)}
+											onChange={(e) => {
+												console.log(typeof Number(e.target.value));
+												field.onChange(Number(e.target.value));
+											}}
 										/>
 									</FormControl>
 									<FormMessage>{form.formState.errors.area?.message}</FormMessage>
