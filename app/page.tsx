@@ -4,7 +4,7 @@ import PrivateRoute from "@/components/privateRoute/PrivateRoute";
 export default function Home() {
 	return (
 		<PrivateRoute>
-			<div>
+			<div className="flex justify-center">
 				<NavBar />
 			</div>
 		</PrivateRoute>

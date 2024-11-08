@@ -14,12 +14,12 @@ const NavBar = () => {
 
 	return (
 		<nav
-			className="w-full h-16 flex justify-evenly items-center gap-8 text-xs
+			className="w-full max-w-[80%] h-16 flex justify-evenly items-center gap-8 text-xs
         "
 		>
-			<div className="flex justify-evenly items-center gap-2">
+			<div className="w-96 flex justify-evenly items-center gap-2">
 				<Link href={"/addArtWork"} className="w-[50%]">
-					<p>Add Artwork</p>
+					<p>ADD ARTWORK</p>
 				</Link>
 				<Input
 					alt="search"
