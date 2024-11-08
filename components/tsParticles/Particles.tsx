@@ -100,7 +100,7 @@ const ParticlesComponent = () => {
 			id="tsparticles"
 			particlesLoaded={particlesLoaded}
 			options={options}
-			className="absolute -z-10 w-full h-[66.8%]"
+			className="absolute -z-10 w-full h-[70%]"
 		/>
 	);
 };
