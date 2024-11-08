@@ -5,9 +5,11 @@ import Image from "next/image";
 import { barkerLogo } from "../constants/constants";
 import Link from "next/link";
 import { useAuth } from "@/lib/context/authContext/AuthContext";
+import { signOutUser } from "@/lib/firebase/firebase";
 
 const NavBar = () => {
 	const { userName } = useAuth();
+
 	const searchArtWorks = () => {};
 
 	return (
@@ -35,7 +37,9 @@ const NavBar = () => {
 				<p>Make Comparables</p>
 				<div className="flex justify-center items-center gap-1">
 					<p>{userName} / </p>
-					<p>Sign Out</p>
+					<p onClick={signOutUser} className="cursor-pointer">
+						Sign Out
+					</p>
 				</div>
 			</div>
 		</nav>

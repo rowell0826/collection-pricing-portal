@@ -55,7 +55,6 @@ export default function SignInForm() {
 			const userCredential = await signInAuthUserWithEmailAndPassword(emailAddress, password);
 
 			if (userCredential) {
-				// Ensure userCredential is defined before accessing its properties
 				console.log("User signed in successfully", userCredential.user);
 
 				router.push("/");
