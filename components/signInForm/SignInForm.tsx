@@ -16,6 +16,7 @@ import {
 import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/navigation";
 import { showAlert } from "@/lib/helperFunc";
+import ParticlesComponent from "../tsParticles/Particles";
 
 const formSchema = z.object({
 	emailAddress: z.string().email({ message: "Please enter a valid email address" }),
@@ -108,7 +109,7 @@ export default function SignInForm() {
 
 	return (
 		<section className="w-full h-[70%] flex justify-center items-center my-auto">
-			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-w-80 max-h-max text-foreground">
+			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-w-80 max-h-max text-foreground bg-white">
 				<Form {...form}>
 					<form
 						onSubmit={form.handleSubmit(handleSubmit)}
@@ -176,6 +177,7 @@ export default function SignInForm() {
 					</form>
 				</Form>
 			</div>
+			<ParticlesComponent />
 		</section>
 	);
 }

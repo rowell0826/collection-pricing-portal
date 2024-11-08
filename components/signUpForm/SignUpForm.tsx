@@ -14,6 +14,7 @@ import {
 import { updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { showAlert } from "@/lib/helperFunc";
+import ParticlesComponentForSignUp from "../tsParticles/ParticlesSU";
 
 const formSchema = z
 	.object({
@@ -109,58 +110,54 @@ export default function SignUpForm() {
 	};
 
 	return (
-		<main className="w-full h-screen min-h-[450px] flex flex-col items-center justify-center">
-			<section className="w-full h-[50%] min-h-[450px] flex flex-col items-center justify-center p-24">
-				<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-w-md max-h-max">
-					<Form {...form}>
-						<form
-							onSubmit={form.handleSubmit(handleSubmit)}
-							className="max-w-sm w-full flex flex-col gap-4"
-						>
-							{formItemLabels.map(
-								(
-									{ labelText, placeHolderText, inputType, formDefaultValue },
-									idx
-								) => (
-									<FormField
-										key={idx}
-										control={form.control}
-										name={formDefaultValue as keyof z.infer<typeof formSchema>}
-										render={({ field }) => {
-											return (
-												<FormItem>
-													<FormLabel>{labelText}</FormLabel>
-													<FormControl>
-														<Input
-															placeholder={placeHolderText}
-															type={inputType}
-															{...field}
-														/>
-													</FormControl>
-													<FormMessage>
-														{
-															form.formState.errors[
-																formDefaultValue as keyof z.infer<
-																	typeof formSchema
-																>
-															]?.message
-														}
-													</FormMessage>
-												</FormItem>
-											);
-										}}
-									/>
-								)
-							)}
-							<div className="flex flex-col justify-center items-center gap-4">
-								<Button type="submit" className="w-full">
-									Sign Up
-								</Button>
-							</div>
-						</form>
-					</Form>
-				</div>
-			</section>
-		</main>
+		<section className="w-full h-[50%] min-h-[450px] flex flex-col items-center justify-center p-24">
+			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-w-md max-h-max bg-white">
+				<Form {...form}>
+					<form
+						onSubmit={form.handleSubmit(handleSubmit)}
+						className="max-w-sm w-full flex flex-col gap-4"
+					>
+						{formItemLabels.map(
+							({ labelText, placeHolderText, inputType, formDefaultValue }, idx) => (
+								<FormField
+									key={idx}
+									control={form.control}
+									name={formDefaultValue as keyof z.infer<typeof formSchema>}
+									render={({ field }) => {
+										return (
+											<FormItem>
+												<FormLabel>{labelText}</FormLabel>
+												<FormControl>
+													<Input
+														placeholder={placeHolderText}
+														type={inputType}
+														{...field}
+													/>
+												</FormControl>
+												<FormMessage>
+													{
+														form.formState.errors[
+															formDefaultValue as keyof z.infer<
+																typeof formSchema
+															>
+														]?.message
+													}
+												</FormMessage>
+											</FormItem>
+										);
+									}}
+								/>
+							)
+						)}
+						<div className="flex flex-col justify-center items-center gap-4">
+							<Button type="submit" className="w-full">
+								Sign Up
+							</Button>
+						</div>
+					</form>
+				</Form>
+			</div>
+			<ParticlesComponentForSignUp />
+		</section>
 	);
 }
