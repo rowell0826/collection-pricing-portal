@@ -4,14 +4,7 @@ import Image from "next/image";
 import React from "react";
 
 const SignIn = () => {
-	return (
-		<div className="w-full h-screen flex flex-col items-center">
-			<div className="w-40 h-20 flex justify-center absolute">
-				<Image src={barkerLogo} alt="Barker Logo" className="pr-4 object-fill" />
-			</div>
-			<SignInForm />
-		</div>
-	);
+	return <section className="w-full h-[70%] flex justify-center items-center my-auto"></section>;
 };
 
 export default SignIn;

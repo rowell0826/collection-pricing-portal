@@ -4,13 +4,15 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 import { barkerLogo } from "../constants/constants";
 import Link from "next/link";
+import { useAuth } from "@/lib/context/authContext/AuthContext";
 
 const NavBar = () => {
+	const { userName } = useAuth();
 	const searchArtWorks = () => {};
 
 	return (
 		<nav
-			className="h-16 flex justify-evenly items-center gap-8 text-xs
+			className="w-full h-16 flex justify-evenly items-center gap-8 text-xs
         "
 		>
 			<div className="flex justify-evenly items-center gap-2">
@@ -32,7 +34,7 @@ const NavBar = () => {
 			<div className="flex justify-between items-center gap-4">
 				<p>Make Comparables</p>
 				<div className="flex justify-center items-center gap-1">
-					<p>User name / </p>
+					<p>{userName} / </p>
 					<p>Sign Out</p>
 				</div>
 			</div>
