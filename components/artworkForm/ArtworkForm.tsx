@@ -3,6 +3,8 @@ import { FormItems } from "@/lib/types/formTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
 
 const formSchema = z.object({
 	title: z.string(),
@@ -54,6 +56,12 @@ const formItemLabels: FormItems[] = [
 		formDefaultValue: "medium",
 	},
 	{
+		labelText: "Image URL",
+		placeHolderText: "Enter image URL",
+		inputType: "url",
+		formDefaultValue: "img_url",
+	},
+	{
 		labelText: "Description",
 		placeHolderText: "Enter description",
 		inputType: "text",
@@ -95,12 +103,6 @@ const formItemLabels: FormItems[] = [
 		inputType: "number",
 		formDefaultValue: "area",
 	},
-	{
-		labelText: "Image URL",
-		placeHolderText: "Enter image URL",
-		inputType: "url",
-		formDefaultValue: "img_url",
-	},
 ];
 
 const ArtworkForm = () => {
@@ -123,7 +125,69 @@ const ArtworkForm = () => {
 		},
 	});
 
-	return <div className="w-full h-screen flex flex-col items-center"></div>;
+	return (
+		<section className="max-w-screen flex flex-col items-center mt-4">
+			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-h-max text-foreground bg-white">
+				<Form {...form}>
+					<form className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+						{formItemLabels.map(
+							({ labelText, placeHolderText, inputType, formDefaultValue }, idx) => (
+								<FormField
+									key={idx}
+									control={form.control}
+									name={formDefaultValue as keyof z.infer<typeof formSchema>}
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>{labelText}</FormLabel>
+											<FormControl>
+												{formDefaultValue === "description" ||
+												formDefaultValue === "provenance" ? (
+													<textarea
+														placeholder={placeHolderText}
+														className="border border-gray-300 rounded-md p-2 h-32 resize-none w-full"
+														{...field}
+														value={
+															field.value instanceof Date
+																? field.value
+																		.toISOString()
+																		.split("T")[0]
+																: field.value
+														}
+													/>
+												) : (
+													<Input
+														placeholder={placeHolderText}
+														type={inputType}
+														{...field}
+														value={
+															field.value instanceof Date
+																? field.value
+																		.toISOString()
+																		.split("T")[0]
+																: field.value
+														}
+													/>
+												)}
+											</FormControl>
+											<FormMessage>
+												{
+													form.formState.errors[
+														formDefaultValue as keyof z.infer<
+															typeof formSchema
+														>
+													]?.message
+												}
+											</FormMessage>
+										</FormItem>
+									)}
+								/>
+							)
+						)}
+					</form>
+				</Form>
+			</div>
+		</section>
+	);
 };
 
 export default ArtworkForm;
