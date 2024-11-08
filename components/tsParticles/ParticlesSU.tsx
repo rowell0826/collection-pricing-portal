@@ -18,8 +18,6 @@ const ParticlesComponentForSignUp = () => {
 	}, []);
 
 	const particlesLoaded = (container?: Container): Promise<void> => {
-		console.log(container);
-
 		return Promise.resolve();
 	};
 

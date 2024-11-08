@@ -1,5 +1,7 @@
+import PrivateRoute from "@/components/privateRoute/PrivateRoute";
+
 const ArtWork = () => {
-	return <div>ArtWOrks</div>;
+	return <PrivateRoute>ArtWOrks</PrivateRoute>;
 };
 
 export default ArtWork;
