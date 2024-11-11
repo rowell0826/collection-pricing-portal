@@ -155,7 +155,7 @@ const ArtworkForm = () => {
 													placeholder="Enter a year"
 													type="number"
 													{...field}
-													value={Number(field.value) ?? 0}
+													value={!NaN ? Number(field.value) : 0}
 													min={1000}
 													max={2010}
 													onChange={(e) =>
@@ -188,7 +188,7 @@ const ArtworkForm = () => {
 													type="number"
 													placeholder="Enter a year"
 													{...field}
-													value={Number(field.value) ?? 0}
+													value={!NaN ? Number(field.value) : 0}
 													min={1000}
 													max={currentYear}
 													onChange={(e) =>
@@ -305,7 +305,7 @@ const ArtworkForm = () => {
 															type="number"
 															placeholder={`Enter ${dimension}`}
 															{...field}
-															value={Number(field.value) ?? 0}
+															value={!NaN ? Number(field.value) : 0}
 															onChange={(e) =>
 																field.onChange(
 																	Number(e.target.value) ||
@@ -342,7 +342,7 @@ const ArtworkForm = () => {
 												placeholder="Auto-calculated aspect ratio"
 												disabled
 												{...field}
-												value={Number(aspectRatio) ?? 0}
+												value={!NaN ? Number(aspectRatio) : 0}
 												onChange={(e) =>
 													field.onChange(Number(e.target.value))
 												}
@@ -367,7 +367,7 @@ const ArtworkForm = () => {
 												placeholder="Auto-calculated area"
 												disabled
 												{...field}
-												value={area ?? 0}
+												value={!NaN ? area : 0}
 												onChange={(e) =>
 													field.onChange(Number(e.target.value))
 												}
