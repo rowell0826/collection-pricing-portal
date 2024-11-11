@@ -34,7 +34,7 @@ const NavBar = () => {
 				</Link>
 			</div>
 			<div className="flex justify-between items-center gap-4">
-				<p>MAKE COMPARABLES</p>
+				<p className="cursor-pointer">MAKE COMPARABLES</p>
 				<div className="flex justify-center items-center gap-1">
 					<p>{userName?.toUpperCase()} / </p>
 					<p onClick={signOutUser} className="cursor-pointer">
