@@ -12,7 +12,7 @@ import { db } from "@/lib/firebase/firebase";
 import { generateUniqueId } from "@/lib/helperFunc";
 
 const formSchema = z.object({
-	title: z.string(),
+	title: z.string().min(1, { message: "Please provide an art title" }),
 	artist_full_name: z
 		.string()
 		.min(6, { message: "Artist name must be at least 6 characters long" }),
