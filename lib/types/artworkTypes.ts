@@ -2,12 +2,12 @@ export interface ArtWork {
 	id: string;
 	title: string;
 	artist_full_name: string;
-	artist_birth: number | undefined;
-	date_of_creation: number | undefined;
+	artist_birth: number | string;
+	date_of_creation: number | string;
 	dimensions: {
-		length: number | undefined;
-		width: number | undefined;
-		height: number | undefined;
+		length: number | string;
+		width: number | string;
+		height: number | string;
 	};
 	medium: string;
 	sale_price: number;
