@@ -21,9 +21,18 @@ const formSchema = z.object({
 	medium: z.string(),
 	description: z.string(),
 	provenance: z.string(),
-	length: z.number().positive().optional(),
-	width: z.number().positive().optional(),
-	height: z.number().positive().optional(),
+	length: z
+		.number()
+		.refine((value) => value >= 0)
+		.optional(),
+	width: z
+		.number()
+		.refine((value) => value >= 0)
+		.optional(),
+	height: z
+		.number()
+		.refine((value) => value >= 0)
+		.optional(),
 	aspect_ratio: z.number().default(0),
 	area: z.number().default(0),
 	img_url: z.string(),
@@ -36,8 +45,8 @@ const ArtworkForm = () => {
 		defaultValues: {
 			title: "",
 			artist_full_name: "",
-			artist_birth: 0,
-			date_of_creation: 0,
+			artist_birth: undefined,
+			date_of_creation: undefined,
 			medium: "",
 			description: "",
 			provenance: "",
@@ -66,16 +75,16 @@ const ArtworkForm = () => {
 				id: artworkId,
 				title: data.title,
 				artist_full_name: data.artist_full_name,
-				artist_birth: Number(data.artist_birth),
-				date_of_creation: Number(data.date_of_creation),
+				artist_birth: NaN ? undefined : Number(data.artist_birth),
+				date_of_creation: NaN ? undefined : Number(data.date_of_creation),
 				medium: data.medium,
 				img_url: [data.img_url],
 				description: data.description,
 				provenance: data.provenance,
 				dimensions: {
-					length: Number(data.length),
-					width: Number(data.width),
-					height: Number(data.height),
+					length: NaN ? undefined : Number(data.length),
+					width: NaN ? undefined : Number(data.width),
+					height: NaN ? undefined : Number(data.height),
 				},
 				aspect_ratio:
 					data.height && data.width ? Number((data.width / data.height).toFixed(2)) : 0,
@@ -146,7 +155,7 @@ const ArtworkForm = () => {
 													placeholder="Enter a year"
 													type="number"
 													{...field}
-													value={Number(field.value) ?? undefined}
+													value={Number(field.value) ?? 0}
 													min={1000}
 													max={2010}
 													onChange={(e) =>
@@ -179,7 +188,7 @@ const ArtworkForm = () => {
 													type="number"
 													placeholder="Enter a year"
 													{...field}
-													value={Number(field.value) ?? undefined}
+													value={Number(field.value) ?? 0}
 													min={1000}
 													max={currentYear}
 													onChange={(e) =>
@@ -284,8 +293,6 @@ const ArtworkForm = () => {
 										control={control}
 										name={dimension as keyof z.infer<typeof formSchema>}
 										render={({ field }) => {
-											const displayValue = field.value ?? undefined;
-
 											return (
 												<FormItem>
 													<FormLabel>
@@ -298,10 +305,11 @@ const ArtworkForm = () => {
 															type="number"
 															placeholder={`Enter ${dimension}`}
 															{...field}
-															value={Number(displayValue)}
+															value={Number(field.value) ?? 0}
 															onChange={(e) =>
 																field.onChange(
-																	Number(e.target.value)
+																	Number(e.target.value) ||
+																		undefined
 																)
 															}
 														/>
@@ -406,7 +414,6 @@ const ArtworkForm = () => {
 												{...field}
 												value={Number(field.value) ?? 0}
 												onChange={(e) => {
-													console.log(typeof Number(e.target.value));
 													field.onChange(Number(e.target.value));
 												}}
 											/>
