@@ -21,6 +21,10 @@ export interface AuthContextProps {
 	role: string | null;
 }
 
+export interface ArtworkContextProps {
+	
+}
+
 export interface UserRole {
 	role: string;
 }
