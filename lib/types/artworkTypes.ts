@@ -5,9 +5,9 @@ export interface ArtWork {
 	artist_birth: number | undefined;
 	date_of_creation: number | undefined;
 	dimensions: {
-		length: number;
-		width: number;
-		height: number;
+		length: number | undefined;
+		width: number | undefined;
+		height: number | undefined;
 	};
 	medium: string;
 	sale_price: number;

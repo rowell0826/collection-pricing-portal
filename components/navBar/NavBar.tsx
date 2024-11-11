@@ -14,7 +14,7 @@ const NavBar = () => {
 
 	return (
 		<nav
-			className="w-full max-w-[80%] h-16 flex justify-evenly items-center gap-8 text-xs
+			className="w-full max-w-[90%] h-16 flex justify-evenly items-center gap-8 text-xs
         "
 		>
 			<div className="w-96 flex justify-evenly items-center gap-2">

@@ -1,13 +1,13 @@
 "use client";
 import { FormItems } from "@/lib/types/formTypes";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { ArtWork } from "@/lib/types/artworkTypes";
-import { addDoc, collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase";
 import { generateUniqueId } from "@/lib/helperFunc";
 
@@ -21,9 +21,9 @@ const formSchema = z.object({
 	medium: z.string(),
 	description: z.string(),
 	provenance: z.string(),
-	length: z.number().positive().default(0),
-	width: z.number().positive().default(0),
-	height: z.number().positive().default(0),
+	length: z.number().positive().optional(),
+	width: z.number().positive().optional(),
+	height: z.number().positive().optional(),
 	aspect_ratio: z.number().default(0),
 	area: z.number().default(0),
 	img_url: z.string(),
@@ -128,14 +128,22 @@ const ArtworkForm = () => {
 			medium: "",
 			description: "",
 			provenance: "",
-			length: 0,
-			width: 0,
-			height: 0,
+			length: undefined,
+			width: undefined,
+			height: undefined,
 			aspect_ratio: 0,
 			area: 0,
 			img_url: "",
 		},
 	});
+
+	const { control, formState } = form;
+
+	const height = useWatch({ control, name: "height" });
+	const width = useWatch({ control, name: "width" });
+
+	const aspectRatio = height && width ? (width / height).toFixed(2) : "0";
+	const area = height && width ? height * width : 0;
 
 	const handleSubmit = async (data: z.infer<typeof formSchema>) => {
 		const artworkId = generateUniqueId();
@@ -156,11 +164,12 @@ const ArtworkForm = () => {
 					width: Number(data.width),
 					height: Number(data.height),
 				},
-				aspect_ratio: data.width / data.height,
-				area: data.width * data.height,
-				sale_price: 0,
+				aspect_ratio:
+					data.height && data.width ? Number((data.width / data.height).toFixed(2)) : 0,
+				area: data.height && data.width ? Number((data.width * data.height).toFixed(2)) : 0,
+				sale_price: Number(data.sale_price),
 			};
-			await addDoc(collection(db, "artworks"), artwork);
+			await setDoc(doc(db, "artworks", artworkId), artwork);
 
 			console.log("Artwork added");
 		} catch (error) {
@@ -176,7 +185,7 @@ const ArtworkForm = () => {
 						<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
 							{/* Artwork Title */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="title"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -184,16 +193,14 @@ const ArtworkForm = () => {
 										<FormControl>
 											<Input placeholder="Artwork title" {...field} />
 										</FormControl>
-										<FormMessage>
-											{form.formState.errors.title?.message}
-										</FormMessage>
+										<FormMessage>{formState.errors.title?.message}</FormMessage>
 									</FormItem>
 								)}
 							/>
 
 							{/* Artist Full Name */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="artist_full_name"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -205,7 +212,7 @@ const ArtworkForm = () => {
 											/>
 										</FormControl>
 										<FormMessage>
-											{form.formState.errors.artist_full_name?.message}
+											{formState.errors.artist_full_name?.message}
 										</FormMessage>
 									</FormItem>
 								)}
@@ -213,7 +220,7 @@ const ArtworkForm = () => {
 
 							{/* Artist Birth Date */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="artist_birth"
 								render={({ field }) => {
 									const displayValue = field.value ?? undefined;
@@ -235,7 +242,7 @@ const ArtworkForm = () => {
 												/>
 											</FormControl>
 											<FormMessage>
-												{form.formState.errors.artist_birth?.message}
+												{formState.errors.artist_birth?.message}
 											</FormMessage>
 										</FormItem>
 									);
@@ -244,7 +251,7 @@ const ArtworkForm = () => {
 
 							{/* Date of Creation */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="date_of_creation"
 								render={({ field }) => {
 									const currentYear = new Date().getFullYear();
@@ -268,7 +275,7 @@ const ArtworkForm = () => {
 												/>
 											</FormControl>
 											<FormMessage>
-												{form.formState.errors.date_of_creation?.message}
+												{formState.errors.date_of_creation?.message}
 											</FormMessage>
 										</FormItem>
 									);
@@ -277,7 +284,7 @@ const ArtworkForm = () => {
 
 							{/* Medium */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="medium"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -289,7 +296,7 @@ const ArtworkForm = () => {
 											/>
 										</FormControl>
 										<FormMessage>
-											{form.formState.errors.medium?.message}
+											{formState.errors.medium?.message}
 										</FormMessage>
 									</FormItem>
 								)}
@@ -297,7 +304,7 @@ const ArtworkForm = () => {
 
 							{/* Image URL */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="img_url"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -306,7 +313,7 @@ const ArtworkForm = () => {
 											<Input placeholder="Enter image URL" {...field} />
 										</FormControl>
 										<FormMessage>
-											{form.formState.errors.img_url?.message}
+											{formState.errors.img_url?.message}
 										</FormMessage>
 									</FormItem>
 								)}
@@ -314,7 +321,7 @@ const ArtworkForm = () => {
 
 							{/* Description */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="description"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -327,7 +334,7 @@ const ArtworkForm = () => {
 											/>
 										</FormControl>
 										<FormMessage>
-											{form.formState.errors.description?.message}
+											{formState.errors.description?.message}
 										</FormMessage>
 									</FormItem>
 								)}
@@ -335,7 +342,7 @@ const ArtworkForm = () => {
 
 							{/* Provenance */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="provenance"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -348,7 +355,7 @@ const ArtworkForm = () => {
 											/>
 										</FormControl>
 										<FormMessage>
-											{form.formState.errors.provenance?.message}
+											{formState.errors.provenance?.message}
 										</FormMessage>
 									</FormItem>
 								)}
@@ -359,10 +366,10 @@ const ArtworkForm = () => {
 								{["length", "width"].map((dimension) => (
 									<FormField
 										key={dimension}
-										control={form.control}
+										control={control}
 										name={dimension as keyof z.infer<typeof formSchema>}
 										render={({ field }) => {
-											const displayValue = field.value ?? 0;
+											const displayValue = field.value ?? undefined;
 
 											return (
 												<FormItem>
@@ -386,7 +393,7 @@ const ArtworkForm = () => {
 													</FormControl>
 													<FormMessage>
 														{
-															form.formState.errors[
+															formState.errors[
 																dimension as keyof z.infer<
 																	typeof formSchema
 																>
@@ -402,7 +409,7 @@ const ArtworkForm = () => {
 
 							{/* Aspect Ratio */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="aspect_ratio"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -412,10 +419,14 @@ const ArtworkForm = () => {
 												placeholder="Auto-calculated aspect ratio"
 												disabled
 												{...field}
+												value={aspectRatio}
+												onChange={(e) =>
+													field.onChange(Number(e.target.value))
+												}
 											/>
 										</FormControl>
 										<FormMessage>
-											{form.formState.errors.aspect_ratio?.message}
+											{formState.errors.aspect_ratio?.message}
 										</FormMessage>
 									</FormItem>
 								)}
@@ -423,7 +434,7 @@ const ArtworkForm = () => {
 
 							{/* Area */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="area"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -433,17 +444,19 @@ const ArtworkForm = () => {
 												placeholder="Auto-calculated area"
 												disabled
 												{...field}
+												value={area}
+												onChange={(e) =>
+													field.onChange(Number(e.target.value))
+												}
 											/>
 										</FormControl>
-										<FormMessage>
-											{form.formState.errors.area?.message}
-										</FormMessage>
+										<FormMessage>{formState.errors.area?.message}</FormMessage>
 									</FormItem>
 								)}
 							/>
 							{/* Height */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="height"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -459,16 +472,14 @@ const ArtworkForm = () => {
 												}
 											/>
 										</FormControl>
-										<FormMessage>
-											{form.formState.errors.area?.message}
-										</FormMessage>
+										<FormMessage>{formState.errors.area?.message}</FormMessage>
 									</FormItem>
 								)}
 							/>
 
 							{/* Sale Price */}
 							<FormField
-								control={form.control}
+								control={control}
 								name="sale_price"
 								render={({ field }) => (
 									<FormItem className="col-span-1">
@@ -485,9 +496,7 @@ const ArtworkForm = () => {
 												}}
 											/>
 										</FormControl>
-										<FormMessage>
-											{form.formState.errors.area?.message}
-										</FormMessage>
+										<FormMessage>{formState.errors.area?.message}</FormMessage>
 									</FormItem>
 								)}
 							/>
