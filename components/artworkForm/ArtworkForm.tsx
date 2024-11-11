@@ -30,107 +30,20 @@ const formSchema = z.object({
 	sale_price: z.number().default(0),
 });
 
-const formItemLabels: FormItems[] = [
-	{
-		labelText: "Artwork title",
-		placeHolderText: "Artwork title",
-		inputType: "text",
-		formDefaultValue: "title",
-	},
-	{
-		labelText: "Artist Full Name",
-		placeHolderText: "Enter artist's full name",
-		inputType: "text",
-		formDefaultValue: "artist_full_name",
-	},
-	{
-		labelText: "Artist Birth Date",
-		placeHolderText: "Select artist's birth date",
-		inputType: "number",
-		formDefaultValue: "artist_birth",
-	},
-	{
-		labelText: "Year of Creation",
-		placeHolderText: "Select creation date",
-		inputType: "number",
-		formDefaultValue: "year_of_creation",
-	},
-	{
-		labelText: "Medium",
-		placeHolderText: "Enter medium of artwork",
-		inputType: "text",
-		formDefaultValue: "medium",
-	},
-	{
-		labelText: "Image URL",
-		placeHolderText: "Enter image URL",
-		inputType: "url",
-		formDefaultValue: "img_url",
-	},
-	{
-		labelText: "Description",
-		placeHolderText: "Enter description",
-		inputType: "text",
-		formDefaultValue: "description",
-	},
-	{
-		labelText: "Provenance",
-		placeHolderText: "Enter provenance information",
-		inputType: "text",
-		formDefaultValue: "provenance",
-	},
-	{
-		labelText: "Length (cm)",
-		placeHolderText: "Enter length",
-		inputType: "number",
-		formDefaultValue: "length",
-	},
-	{
-		labelText: "Width (cm)",
-		placeHolderText: "Enter width",
-		inputType: "number",
-		formDefaultValue: "width",
-	},
-	{
-		labelText: "Height (cm)",
-		placeHolderText: "Enter height",
-		inputType: "number",
-		formDefaultValue: "height",
-	},
-	{
-		labelText: "Aspect Ratio",
-		placeHolderText: "Auto-calculated aspect ratio",
-		inputType: "number",
-		formDefaultValue: "aspect_ratio",
-	},
-	{
-		labelText: "Area (sq. cm)",
-		placeHolderText: "Auto-calculated area",
-		inputType: "number",
-		formDefaultValue: "area",
-	},
-	{
-		labelText: "Sale Price",
-		placeHolderText: "Input sale price in usd",
-		inputType: "number",
-		formDefaultValue: "sale_price",
-	},
-];
-
 const ArtworkForm = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			title: "",
 			artist_full_name: "",
-			artist_birth: undefined,
-			date_of_creation: undefined,
+			artist_birth: 0,
+			date_of_creation: 0,
 			medium: "",
 			description: "",
 			provenance: "",
-			length: undefined,
-			width: undefined,
-			height: undefined,
+			length: 0.0,
+			width: 0.0,
+			height: 0.0,
 			aspect_ratio: 0,
 			area: 0,
 			img_url: "",
@@ -142,10 +55,10 @@ const ArtworkForm = () => {
 	const height = useWatch({ control, name: "height" });
 	const width = useWatch({ control, name: "width" });
 
-	const aspectRatio = height && width ? (width / height).toFixed(2) : "0";
+	const aspectRatio = height && width ? (width / height).toFixed(2) : 0;
 	const area = height && width ? height * width : 0;
 
-	const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
 		const artworkId = generateUniqueId();
 
 		try {
@@ -171,6 +84,8 @@ const ArtworkForm = () => {
 			};
 			await setDoc(doc(db, "artworks", artworkId), artwork);
 
+			form.reset();
+
 			console.log("Artwork added");
 		} catch (error) {
 			console.log("Failed to add to firestore collection ", error);
@@ -181,7 +96,7 @@ const ArtworkForm = () => {
 		<section className="max-w-screen flex flex-col items-center mt-4">
 			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-h-max text-foreground bg-white">
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(handleSubmit)}>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
 							{/* Artwork Title */}
 							<FormField
@@ -223,8 +138,6 @@ const ArtworkForm = () => {
 								control={control}
 								name="artist_birth"
 								render={({ field }) => {
-									const displayValue = field.value ?? undefined;
-
 									return (
 										<FormItem className="col-span-1">
 											<FormLabel>Artist Birth Date</FormLabel>
@@ -233,11 +146,13 @@ const ArtworkForm = () => {
 													placeholder="Enter a year"
 													type="number"
 													{...field}
-													value={Number(displayValue)}
+													value={Number(field.value) ?? undefined}
 													min={1000}
 													max={2010}
 													onChange={(e) =>
-														field.onChange(Number(e.target.value))
+														field.onChange(
+															Number(e.target.value) || undefined
+														)
 													}
 												/>
 											</FormControl>
@@ -256,8 +171,6 @@ const ArtworkForm = () => {
 								render={({ field }) => {
 									const currentYear = new Date().getFullYear();
 
-									const displayValue = field.value ?? undefined;
-
 									return (
 										<FormItem className="col-span-1">
 											<FormLabel>Date of Creation</FormLabel>
@@ -266,11 +179,13 @@ const ArtworkForm = () => {
 													type="number"
 													placeholder="Enter a year"
 													{...field}
-													value={Number(displayValue)}
+													value={Number(field.value) ?? undefined}
 													min={1000}
 													max={currentYear}
 													onChange={(e) =>
-														field.onChange(Number(e.target.value))
+														field.onChange(
+															Number(e.target.value) || undefined
+														)
 													}
 												/>
 											</FormControl>
@@ -419,7 +334,7 @@ const ArtworkForm = () => {
 												placeholder="Auto-calculated aspect ratio"
 												disabled
 												{...field}
-												value={aspectRatio}
+												value={Number(aspectRatio) ?? 0}
 												onChange={(e) =>
 													field.onChange(Number(e.target.value))
 												}
@@ -444,7 +359,7 @@ const ArtworkForm = () => {
 												placeholder="Auto-calculated area"
 												disabled
 												{...field}
-												value={area}
+												value={area ?? 0}
 												onChange={(e) =>
 													field.onChange(Number(e.target.value))
 												}
@@ -466,7 +381,7 @@ const ArtworkForm = () => {
 												type="number"
 												placeholder={"Enter height"}
 												{...field}
-												value={Number(field.value)}
+												value={Number(field.value) ?? 0}
 												onChange={(e) =>
 													field.onChange(Number(e.target.value))
 												}
@@ -489,7 +404,7 @@ const ArtworkForm = () => {
 												type="number"
 												placeholder={"Enter sale price"}
 												{...field}
-												value={Number(field.value)}
+												value={Number(field.value) ?? 0}
 												onChange={(e) => {
 													console.log(typeof Number(e.target.value));
 													field.onChange(Number(e.target.value));
@@ -503,7 +418,7 @@ const ArtworkForm = () => {
 						</div>
 						<div className="w-full relative flex justify-center gap-4 mt-4">
 							<Button type="submit">ADD</Button>
-							<Button>RESET</Button>
+							<Button onClick={() => form.reset()}>RESET</Button>
 						</div>
 					</form>
 				</Form>
