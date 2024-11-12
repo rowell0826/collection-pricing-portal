@@ -40,9 +40,9 @@ const ArtWorkCard = () => {
 					{artworkData.map((artwork) => (
 						<Card
 							key={artwork.id}
-							className="rounded-md h-[380px] w-[240px] min-w-[240px]"
+							className="rounded-md h-[380px] w-[260px] min-w-[240px]"
 						>
-							<Link href={"https://google.com"} className="rounded-md">
+							<Link href={"/viewArt"} className="rounded-md">
 								<CardHeader className="relative h-[50%]">
 									<Image
 										src={artwork.img_url[0]}
@@ -53,7 +53,12 @@ const ArtWorkCard = () => {
 									/>
 								</CardHeader>
 								<CardContent className="max-h-[50%] overflow-y-scroll scrollbar-hide">
-									<h6 className="text-sm">{artwork.title}</h6>
+									<h6 className="text-sm mt-2 flex justify-between">
+										{artwork.title}
+										<span className="text-[0.5rem] text-gray-500">
+											{artwork.id}
+										</span>
+									</h6>
 									<p className="text-xs my-2">by {artwork.artist_full_name}</p>
 
 									<p className="text-xs my-2 max-h-[50px] scrollbar-hide overflow-y-scroll">
