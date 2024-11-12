@@ -53,7 +53,7 @@ const ArtWorkCard = () => {
 									/>
 								</CardHeader>
 								<CardContent className="max-h-[50%] overflow-y-scroll scrollbar-hide">
-									<h6 className="text-sm mt-2 flex justify-between">
+									<h6 className="text-sm max-h-9 mt-2 flex justify-between scrollbar-hide overflow-y-scroll">
 										{artwork.title}
 										<span className="text-[0.5rem] text-gray-500">
 											{artwork.id}
