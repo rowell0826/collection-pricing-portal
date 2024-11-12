@@ -10,7 +10,7 @@ import { collection, doc, getDocs, query, where } from "firebase/firestore";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 interface Comp {
 	artist_full_name: string;
 	title: string;
@@ -132,7 +132,25 @@ const Comps = () => {
 			setIsCompEmpty(false);
 			return updatedComps;
 		});
+
+		setCompTitle("");
+		setCompArtist("");
+		setCompCreation("");
+		setCompImg([]);
+		setCompMedium("");
+		setCompPrice(0);
 	};
+
+	const isAddEnabled = useMemo(() => {
+		return (
+			compArtist.trim() !== "" &&
+			compTitle.trim() !== "" &&
+			compMedium.trim() !== "" &&
+			compCreation &&
+			compPrice > 0 &&
+			compImg.length > 0
+		);
+	}, [compArtist, compTitle, compMedium, compCreation, compPrice, compImg]);
 
 	return (
 		<div className="flex w-screen h-screen">
@@ -170,7 +188,7 @@ const Comps = () => {
 						</CardHeader>
 						<CardContent className="h-full max-h-[40%] overflow-y-scroll scrollbar-hide">
 							<h6 className="text-sm mt-2">{searchResults.title}</h6>
-							<p className="text-xs mt-2">{searchResults.artist_full_name}</p>
+							<p className="text-xs mt-2">Created by {searchResults.artist_full_name}</p>
 
 							<p className="text-xs max-h-[50px] scrollbar-hide overflow-y-scroll">
 								Medium: {searchResults.medium}
@@ -359,7 +377,9 @@ const Comps = () => {
 							</div>
 						</CardContent>
 						<CardFooter className="flex justify-evenly">
-							<Button onClick={addCompHandler}>Add</Button>
+							<Button onClick={addCompHandler} disabled={!isAddEnabled}>
+								Add
+							</Button>
 							<Button
 								onClick={() => {
 									setCompArtist("");
