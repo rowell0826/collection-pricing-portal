@@ -1,3 +1,4 @@
+import { showAlert } from "@/lib/helperFunc";
 import { google } from "googleapis";
 
 export async function POST(request: Request) {
@@ -15,7 +16,6 @@ export async function POST(request: Request) {
 			credentials = JSON.parse(decodedCredentials);
 		} else if (process.env.GOOGLE_SERVICE_ACCOUNT) {
 			credentials = await import(process.env.GOOGLE_SERVICE_ACCOUNT!);
-			
 		} else {
 			throw new Error("Google service account credentials are not available.");
 		}
@@ -33,6 +33,8 @@ export async function POST(request: Request) {
 		});
 
 		console.log("Sheets API Response:", response.data);
+
+		showAlert("success", "Data sent to pricing");
 
 		return new Response(JSON.stringify({ message: "Data appended successfully" }), {
 			status: 200,

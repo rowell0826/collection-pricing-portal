@@ -174,8 +174,11 @@ const Comps = () => {
 
 		if (!allArtistsMatch) {
 			showAlert("info", "Artist names do not match across all comps. Aborting operation.");
-			console.error("Artist names do not match across all comps. Aborting operation.");
+			console.log("Artist names do not match across all comps. Aborting operation.");
 			return;
+		} else if (comps.length === 0) {
+			showAlert("info", "Please add comparables before submitting.");
+			console.log("Please add comparables before submitting.");
 		}
 
 		const { length, width, height } = dimensions;
