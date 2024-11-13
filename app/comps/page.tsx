@@ -278,7 +278,7 @@ const Comps = () => {
 					<Card
 						className={`${
 							isSearchEmpty ? "hidden" : ""
-						} rounded-md h-[340px] w-[240px] min-w-[240px}`}
+						} rounded-md h-[360px] w-[240px] min-w-[240px}`}
 					>
 						<CardHeader className="relative h-[60%]">
 							{Array.isArray(searchResults.img_url) &&
@@ -300,9 +300,9 @@ const Comps = () => {
 								/>
 							)}
 						</CardHeader>
-						<CardContent className="h-full max-h-[40%] overflow-y-scroll scrollbar-hide">
-							<h6 className="text-sm mt-2">{searchResults.title}</h6>
-							<p className="text-xs mt-2">
+						<CardContent className="h-full max-h-[40%] scrollbar-hide">
+							<h6 className="text-sm mt-2 ">{searchResults.title}</h6>
+							<p className="text-xs mt-2 max-h-[30px] overflow-y-scroll scrollbar-hide">
 								Created by {searchResults.artist_full_name}
 							</p>
 
@@ -321,7 +321,7 @@ const Comps = () => {
 								Sale Price:{" "}
 								{Number.isNaN(searchResults.sale_price)
 									? ""
-									: searchResults.sale_price}
+									: `${searchResults.sale_price} usd`}
 							</span>
 						</CardContent>
 					</Card>
@@ -332,7 +332,7 @@ const Comps = () => {
 							key={index}
 							className={`${
 								isCompEmpty ? "hidden" : ""
-							} rounded-md h-[340px] w-[240px] min-w-[240px]`}
+							} rounded-md h-[360px] w-[240px] min-w-[240px]`}
 						>
 							<CardHeader className="relative h-[60%]">
 								<Image
@@ -350,7 +350,9 @@ const Comps = () => {
 									Medium: {comp.medium}
 								</p>
 								<p className="text-xs">Created: {comp.date_of_creation}</p>
-								<span className="text-[0.6rem]">Sale Price: {comp.sale_price}</span>
+								<span className="text-[0.6rem]">
+									Sale Price: {`${comp.sale_price} usd`}
+								</span>
 							</CardContent>
 						</Card>
 					))}
