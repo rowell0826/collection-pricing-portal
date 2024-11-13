@@ -8,7 +8,7 @@ export const showAlert = (
 		position: "top",
 		icon: iconImg,
 		html: htmlTxt,
-		timer: 1500,
+		timer: 2000,
 		showConfirmButton: false,
 		toast: true,
 		background: `rgba(0,0,0, 1)`,

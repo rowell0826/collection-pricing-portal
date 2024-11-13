@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { google } from "googleapis";
+import { showAlert } from "@/lib/helperFunc";
 
 export interface Comp {
 	artist_full_name: string;
@@ -170,6 +171,14 @@ const Comps = () => {
 			img_url,
 		} = searchResults;
 
+		const allArtistsMatch = comps.every((comp) => comp.artist_full_name === artist_full_name);
+
+		if (!allArtistsMatch) {
+			showAlert("info", "Artist names do not match across all comps. Aborting operation.");
+			console.error("Artist names do not match across all comps. Aborting operation.");
+			return;
+		}
+
 		const { length, width, height } = dimensions;
 
 		const validImgUrl = Array.isArray(img_url) ? img_url.join(", ") : img_url;
@@ -213,6 +222,45 @@ const Comps = () => {
 				}
 			} else {
 				console.error("Error response:", textResponse);
+			}
+
+			for (let i = 0; i < comps.length; i++) {
+				const comp = comps[i];
+				const range = `Sheet${i + 2}!A2:I2`; //  Sheet2, Sheet3, Sheet4 based on the index iteration
+				const compData = [
+					comp.title,
+					comp.medium,
+					"",
+					"",
+					"",
+					comp.date_of_creation,
+					"",
+					comp.sale_price,
+					comp.img_url.join(", "),
+				];
+
+				const compResponse = await fetch("/api/appendData", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
+						range: range,
+						values: [compData],
+					}),
+				});
+
+				const compTextResponse = await compResponse.text();
+
+				if (compResponse.ok) {
+					try {
+						const result = JSON.parse(compTextResponse);
+						console.log(result);
+					} catch (jsonError) {
+						console.error("Error parsing JSON:", jsonError);
+					}
+				} else {
+					console.error("Error response:", compTextResponse);
+				}
 			}
 		} catch (error) {
 			console.error("Network or unexpected error:", error);
