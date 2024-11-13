@@ -179,7 +179,7 @@ const Comps = () => {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
-					spreadsheetId: "1BPMFSCd449_5-zC8-dZf97s1rPfqMv-HLJCORdFSorw",
+					spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
 					range: "Sheet1!A2:M2",
 					values: [
 						[
