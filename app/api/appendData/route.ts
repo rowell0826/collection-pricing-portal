@@ -25,14 +25,13 @@ export async function POST(request: Request) {
 			scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 		});
 		const sheets = google.sheets({ version: "v4", auth });
-		const response = await sheets.spreadsheets.values.append({
+
+		await sheets.spreadsheets.values.append({
 			spreadsheetId,
 			range,
 			valueInputOption: "RAW",
 			requestBody: { values },
 		});
-
-		
 
 		showAlert("success", "Data sent to pricing");
 
