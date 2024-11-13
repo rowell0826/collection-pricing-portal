@@ -1,5 +1,5 @@
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { Container, type ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
+import { type ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { useEffect, useMemo, useState } from "react";
 
