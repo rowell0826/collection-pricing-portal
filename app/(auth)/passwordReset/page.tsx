@@ -1,7 +1,11 @@
-const PassWordReset = () => {
+import PasswordResetForm from "@/components/passwordReset/PasswordResetForm";
+
+const PassWordResetPage = () => {
 	return (
 		<>
-			<PassWordReset />
+			<PasswordResetForm />
 		</>
 	);
 };
+
+export default PassWordResetPage;
