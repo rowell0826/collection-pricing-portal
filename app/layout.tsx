@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import PrivateRoute from "@/components/privateRoute/PrivateRoute";
 import { AuthProvider } from "@/lib/context/authContext/AuthContext";
 
 const montserrat = Montserrat({ weight: "500", subsets: ["latin"] });

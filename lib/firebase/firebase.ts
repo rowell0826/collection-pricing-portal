@@ -8,7 +8,6 @@ import {
 	signOut,
 } from "firebase/auth";
 import { doc, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
 import { UserDetails } from "../types/authTypes";
 import Swal from "sweetalert2";
 

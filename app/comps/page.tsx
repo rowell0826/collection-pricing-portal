@@ -11,7 +11,6 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { google } from "googleapis";
 import { showAlert } from "@/lib/helperFunc";
 
 export interface Comp {

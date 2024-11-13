@@ -1,10 +1,10 @@
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { Container, type ISourceOptions, MoveDirection, OutMode } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const ParticlesComponentForSignUp = () => {
-	const [init, setInit] = useState<boolean>(false);
+	const [_init, setInit] = useState<boolean>(false);
 
 	useEffect(() => {
 		const initParticles = async () => {
@@ -17,7 +17,7 @@ const ParticlesComponentForSignUp = () => {
 		initParticles();
 	}, []);
 
-	const particlesLoaded = (container?: Container): Promise<void> => {
+	const particlesLoaded = (_container?: Container): Promise<void> => {
 		return Promise.resolve();
 	};
 

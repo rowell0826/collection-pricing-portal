@@ -3,7 +3,7 @@ import { db } from "@/lib/firebase/firebase";
 import { ArtWork } from "@/lib/types/artworkTypes";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/card";
 import Link from "next/link";
 import Image from "next/image";
 
