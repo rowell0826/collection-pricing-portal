@@ -4,8 +4,23 @@ export async function POST(request: Request) {
 	try {
 		const { spreadsheetId, range, values } = await request.json();
 
+		let credentials;
+
+		if (process.env.GOOGLE_SERVICE_ACCOUNT_BASE64) {
+			const decodedCredentials = Buffer.from(
+				process.env.GOOGLE_SERVICE_ACCOUNT_BASE64,
+				"base64"
+			).toString("utf-8");
+
+			credentials = JSON.parse(decodedCredentials);
+		} else if (process.env.GOOGLE_SERVICE_ACCOUNT) {
+			credentials = require(process.env.GOOGLE_SERVICE_ACCOUNT);
+		} else {
+			throw new Error("Google service account credentials are not available.");
+		}
+
 		const auth = new google.auth.GoogleAuth({
-			credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT || "{}"),
+			credentials,
 			scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 		});
 		const sheets = google.sheets({ version: "v4", auth });
