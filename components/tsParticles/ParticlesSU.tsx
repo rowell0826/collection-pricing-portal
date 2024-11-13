@@ -4,7 +4,7 @@ import { loadSlim } from "@tsparticles/slim";
 import { useEffect, useMemo, useState } from "react";
 
 const ParticlesComponentForSignUp = () => {
-	const [_init, setInit] = useState<boolean>(false);
+	const [_, setInit] = useState<boolean>(false);
 
 	useEffect(() => {
 		const initParticles = async () => {
