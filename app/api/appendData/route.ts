@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 			requestBody: { values },
 		});
 
-		console.log("Sheets API Response:", response.data);
+		
 
 		showAlert("success", "Data sent to pricing");
 
