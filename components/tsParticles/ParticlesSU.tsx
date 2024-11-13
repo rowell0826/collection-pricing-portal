@@ -17,7 +17,7 @@ const ParticlesComponentForSignUp = () => {
 		initParticles();
 	}, []);
 
-	const particlesLoaded = (_container?: Container): Promise<void> => {
+	const particlesLoaded = (): Promise<void> => {
 		return Promise.resolve();
 	};
 

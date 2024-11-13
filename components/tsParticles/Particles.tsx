@@ -17,7 +17,7 @@ const ParticlesComponent = () => {
 		initParticles();
 	}, []);
 
-	const particlesLoaded = (container?: Container): Promise<void> => {
+	const particlesLoaded = (): Promise<void> => {
 		return Promise.resolve();
 	};
 
