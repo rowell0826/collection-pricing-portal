@@ -179,6 +179,8 @@ const Comps = () => {
 		} else if (comps.length === 0) {
 			showAlert("info", "Please add comparables before submitting.");
 			console.log("Please add comparables before submitting.");
+
+			return;
 		}
 
 		const { length, width, height } = dimensions;
