@@ -14,7 +14,8 @@ export async function POST(request: Request) {
 
 			credentials = JSON.parse(decodedCredentials);
 		} else if (process.env.GOOGLE_SERVICE_ACCOUNT) {
-			credentials = require(process.env.GOOGLE_SERVICE_ACCOUNT);
+			credentials = await import(process.env.GOOGLE_SERVICE_ACCOUNT!);
+			
 		} else {
 			throw new Error("Google service account credentials are not available.");
 		}
