@@ -6,12 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/lib/firebase/firebase";
 import { ArtWork } from "@/lib/types/artworkTypes";
-import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-interface Comp {
+import { google } from "googleapis";
+
+export interface Comp {
 	artist_full_name: string;
 	title: string;
 	medium: string;
@@ -152,6 +154,71 @@ const Comps = () => {
 		);
 	}, [compArtist, compTitle, compMedium, compCreation, compPrice, compImg]);
 
+	const pricingHandler = async () => {
+		const {
+			title,
+			artist_full_name,
+			medium,
+			date_of_creation,
+			sale_price,
+			artist_birth,
+			description,
+			provenance,
+			dimensions = { length: 0, width: 0, height: 0 },
+			aspect_ratio,
+			area,
+			img_url,
+		} = searchResults;
+
+		const { length, width, height } = dimensions;
+
+		const validImgUrl = Array.isArray(img_url) ? img_url.join(", ") : img_url;
+
+		try {
+			const response = await fetch("/api/appendData", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					spreadsheetId: "1BPMFSCd449_5-zC8-dZf97s1rPfqMv-HLJCORdFSorw",
+					range: "Sheet1!A2:M2",
+					values: [
+						[
+							artist_full_name,
+							artist_birth,
+							title,
+							date_of_creation,
+							medium,
+							description,
+							provenance,
+							length,
+							width,
+							height,
+							aspect_ratio,
+							area,
+							validImgUrl,
+							sale_price,
+						],
+					],
+				}),
+			});
+
+			const textResponse = await response.text();
+
+			if (response.ok) {
+				try {
+					const result = JSON.parse(textResponse);
+					console.log(result);
+				} catch (jsonError) {
+					console.error("Error parsing JSON:", jsonError);
+				}
+			} else {
+				console.error("Error response:", textResponse);
+			}
+		} catch (error) {
+			console.error("Network or unexpected error:", error);
+		}
+	};
+
 	return (
 		<div className="flex w-screen h-screen">
 			<div className="flex-1 flex flex-col">
@@ -188,7 +255,9 @@ const Comps = () => {
 						</CardHeader>
 						<CardContent className="h-full max-h-[40%] overflow-y-scroll scrollbar-hide">
 							<h6 className="text-sm mt-2">{searchResults.title}</h6>
-							<p className="text-xs mt-2">Created by {searchResults.artist_full_name}</p>
+							<p className="text-xs mt-2">
+								Created by {searchResults.artist_full_name}
+							</p>
 
 							<p className="text-xs max-h-[50px] scrollbar-hide overflow-y-scroll">
 								Medium: {searchResults.medium}
@@ -240,7 +309,7 @@ const Comps = () => {
 					))}
 				</div>
 				<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
-					<Button>Send for Pricing</Button>
+					<Button onClick={pricingHandler}>Send for Pricing</Button>
 					<Button
 						onClick={() => {
 							setSearchResults(defaultValue);
