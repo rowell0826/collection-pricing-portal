@@ -67,7 +67,7 @@ const ArtWorkCard = () => {
 
 									<div className="flex justify-between">
 										<span className="text-[0.6rem]">
-											Area(cm): {artwork.area}{" "}
+											Area(cm²): {artwork.area}{" "}
 										</span>
 										<span className="text-[0.6rem]">
 											Aspect Ratio(cm): {artwork.aspect_ratio}
