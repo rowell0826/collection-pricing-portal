@@ -33,10 +33,10 @@ const ArtWorkCard = () => {
 	}, []);
 
 	return (
-		<div className="flex flex-col justify-start items-center">
+		<div className="w-screen flex flex-col justify-start items-center">
 			<h2 className="my-4">ART COLLECTIONS</h2>
-			<div className="w-screen h-[100%] flex flex-col justify-center items-center">
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+			<div className="relative w-full h-[100%] flex flex-col justify-center items-center">
+				<div className="relative w-full flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
 					{artworkData.map((artwork) => (
 						<Card
 							key={artwork.id}
