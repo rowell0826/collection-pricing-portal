@@ -102,7 +102,7 @@ const ArtworkForm = () => {
 
 	return (
 		<section className="max-w-screen flex flex-col items-center mt-4">
-			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-h-max text-foreground bg-white">
+			<div className="border border-slate-100 shadow-lg rounded-lg p-8 w-full min-w-80 max-h-max text-foreground">
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
