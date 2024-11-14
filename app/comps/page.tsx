@@ -12,13 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { showAlert } from "@/lib/helperFunc";
-import {
-	Sidebar,
-	SidebarProvider,
-	SidebarRail,
-	SidebarSeparator,
-	SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { Sidebar, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export interface Comp {
 	artist_full_name: string;
@@ -200,7 +194,7 @@ const Comps = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
-					range: "Sheet1!A2:M2",
+					range: "input_artwork!A2:M2",
 					values: [
 						[
 							artist_full_name,
@@ -237,7 +231,7 @@ const Comps = () => {
 
 			for (let i = 0; i < comps.length; i++) {
 				const comp = comps[i];
-				const range = `Sheet${i + 2}!A2:I2`; //  Sheet2, Sheet3, Sheet4 based on the index iteration
+				const range = `comp_${i + 1}!A2:I2`; //  comp_1, comp_2, comp_3 based on the index iteration
 				const compData = [
 					comp.title,
 					comp.medium,
@@ -453,7 +447,9 @@ const Comps = () => {
 						<TabsContent value="comparables">
 							<Card>
 								<CardHeader className="max-h-10">
-									<CardTitle className="font-normal">ADD COMPARABLES</CardTitle>
+									<CardTitle className="font-normal mb-2">
+										ADD COMPARABLES
+									</CardTitle>
 								</CardHeader>
 								<CardContent className="space-y-2">
 									<div className="space-y-1">
@@ -513,9 +509,9 @@ const Comps = () => {
 											id="img_url"
 											className="h-6"
 											value={compImg}
-											onChange={(e) =>
-												setCompImg((prev) => [...prev, e.target.value])
-											}
+											onChange={(e) => {
+												setCompImg((prev) => [...prev, e.target.value]);
+											}}
 										/>
 									</div>
 								</CardContent>
