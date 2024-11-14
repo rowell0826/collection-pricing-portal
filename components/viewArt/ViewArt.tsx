@@ -10,31 +10,29 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface ViewArtProps {
-	params: { id: string };
+	artworkId: string;
 }
 
-const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
-	console.log("ID in ViewArt:", params.id);
+const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
+	console.log("ID in ViewArt:", artworkId);
 
 	const [artwork, setArtwork] = useState<ArtWork | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
-	const id = params.id;
-
 	useEffect(() => {
-		console.log("ID Type: ", typeof id);
+		console.log("ID Type: ", typeof artworkId);
 
 		const fetchArtwork = async () => {
 			try {
-				const artRef = doc(db, "artworks", id);
+				const artRef = doc(db, "artworks", artworkId);
 				const artSnapshot = await getDoc(artRef);
 
 				if (artSnapshot.exists()) {
 					setArtwork(artSnapshot.data() as ArtWork);
 				} else {
 					setError("Artwork not found.");
-					console.warn("Document does not exist for ID:", id);
+					console.warn("Document does not exist for ID:", artworkId);
 				}
 			} catch (error) {
 				setError("Failed to load artwork data.");
@@ -45,7 +43,7 @@ const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
 		};
 
 		fetchArtwork();
-	}, [id]);
+	}, [artworkId]);
 
 	if (loading) return <div>Loading...</div>;
 	if (error) return <div>{error}</div>;
