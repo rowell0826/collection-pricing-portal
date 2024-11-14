@@ -24,7 +24,6 @@ const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
 		const fetchArtwork = async () => {
 			try {
 				const artRef = doc(db, "artworks", id);
-
 				const artSnapshot = await getDoc(artRef);
 
 				if (artSnapshot.exists()) {
