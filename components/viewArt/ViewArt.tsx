@@ -14,14 +14,16 @@ interface ViewArtProps {
 }
 
 const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
+	console.log("ID in ViewArt:", params.id);
+
 	const [artwork, setArtwork] = useState<ArtWork | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
-	const { id } = params;
+	const id = params.id;
 
 	useEffect(() => {
-		console.log("ID:", id);
+		console.log("ID Type: ", typeof id);
 
 		const fetchArtwork = async () => {
 			try {
