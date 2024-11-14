@@ -1,12 +1,12 @@
 import ViewArt from "@/components/viewArt/ViewArt";
 
 interface PageProps {
-	params: Promise<{ id: string }>;
+	params: { id: string };
 }
 
 export default async function Page({ params }: PageProps) {
 	console.log("Route param ID:", params);
-	const id = (await params).id;
+	const { id } = params;
 
 	return <ViewArt artworkId={id} />;
 }
