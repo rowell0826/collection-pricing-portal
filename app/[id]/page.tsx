@@ -97,13 +97,15 @@ const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
 					<p className="text-sm">{description}</p>
 					{provenance && <p className="text-sm font-light">Provenance: {provenance}</p>}
 					{medium && <p className="text-sm font-light">Medium: {medium}</p>}
-					<div className="space-y-1">
-						<p className="text-sm font-light">Dimensions:</p>
-						{length && <p className="text-sm">Length: {length} cm</p>}
-						<p className="text-sm">Width: {width} cm</p>
-						<p className="text-sm">Height: {height} cm</p>
-						<p className="text-sm">Area: {area} cm²</p>
-						<p className="text-sm">Aspect Ratio: {aspect_ratio}</p>
+					<div className="space-y-1 flex flex-col items-end">
+						<p className="text-sm font-light self-start">Dimensions:</p>
+						{Number.isNaN(length) ? "" : <p className="text-sm">Length: {length} cm</p>}
+						<div className="flex flex-col items-start">
+							<p className="text-sm">Width: {width} cm</p>
+							<p className="text-sm">Height: {height} cm</p>
+							<p className="text-sm">Area: {area} cm²</p>
+							<p className="text-sm">Aspect Ratio: {aspect_ratio}</p>
+						</div>
 					</div>
 				</CardContent>
 				<CardFooter className="text-xs text-gray-500 font-medium">
