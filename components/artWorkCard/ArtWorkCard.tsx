@@ -42,7 +42,7 @@ const ArtWorkCard = () => {
 							key={artwork.id}
 							className="rounded-md h-[380px] w-[260px] min-w-[240px]"
 						>
-							<Link href={"/viewArt"} className="rounded-md">
+							<Link href={`/${artwork.id}`} className="rounded-md">
 								<CardHeader className="relative h-[50%]">
 									<Image
 										src={artwork.img_url[0]}
