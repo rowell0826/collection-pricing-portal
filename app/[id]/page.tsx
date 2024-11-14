@@ -83,11 +83,11 @@ const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
 			</div>
 
 			{/* Side Dashboard */}
-			<Card className="relative md:h-screen md:w-[20%] bg-white shadow-lg p-6">
+			<Card className="relative md:h-screen md:w-[20%] shadow-lg p-6">
 				<CardHeader>
-					<CardTitle className="font-semibold text-md text-gray-800">{title}</CardTitle>
+					<CardTitle className="font-semibold text-md">{title}</CardTitle>
 				</CardHeader>
-				<CardContent className="flex flex-col gap-4 text-gray-700">
+				<CardContent className="flex flex-col gap-4">
 					<h4 className="text-md font-medium">
 						{artist_full_name}
 						<span className="text-gray-500 text-sm">
@@ -108,8 +108,8 @@ const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
 						</div>
 					</div>
 				</CardContent>
-				<CardFooter className="text-xs text-gray-500 font-medium">
-					{sale_price} USD
+				<CardFooter className="text-xs text-foreground font-medium">
+					Sale price: {sale_price} USD
 				</CardFooter>
 			</Card>
 		</section>
