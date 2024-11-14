@@ -62,7 +62,7 @@ const ViewArt: React.FC<ViewArtProps> = ({ params }) => {
 	return (
 		<section className="w-screen h-full md:h-screen flex flex-col md:flex-row bg-gray-100 overflow-y-scroll scrollbar-hide">
 			{/* Image Area */}
-			<div className=" relative md:flex-1 h-screen w-screen md:w-[80%] bg-none">
+			<div className="relative md:flex-1 h-screen w-screen md:w-[80%] bg-none">
 				<Link href={"/"} className="absolute z-10">
 					<Button className="ml-4 mt-4" size={"sm"}>
 						<ArrowLeft />
