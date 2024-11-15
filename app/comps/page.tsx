@@ -345,7 +345,7 @@ const Comps = () => {
 							>
 								<CardHeader className="relative h-[60%]">
 									<Image
-										src={comp.img_url[0]}
+										src={comp.img_url}
 										alt="Comps Image"
 										priority
 										fill
