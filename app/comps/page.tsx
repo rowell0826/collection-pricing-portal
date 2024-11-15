@@ -46,7 +46,7 @@ const Comps = () => {
 	const [compMedium, setCompMedium] = useState<string>("");
 	const [compCreation, setCompCreation] = useState<number | "">("");
 	const [compPrice, setCompPrice] = useState<number>(0);
-	const [compImg, setCompImg] = useState<string[]>([]);
+	const [compImg, setCompImg] = useState<string>("");
 
 	const currentYear = new Date().getFullYear();
 
@@ -510,7 +510,7 @@ const Comps = () => {
 											className="h-6"
 											value={compImg}
 											onChange={(e) => {
-												setCompImg((prev) => [...prev, e.target.value]);
+												setCompImg(e.target.value);
 											}}
 										/>
 									</div>
