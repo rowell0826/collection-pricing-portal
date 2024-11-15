@@ -20,7 +20,7 @@ export interface Comp {
 	medium: string;
 	date_of_creation: number | "";
 	sale_price: number;
-	img_url: string[];
+	img_url: string;
 }
 
 const defaultValue: Partial<ArtWork> = {
@@ -139,7 +139,7 @@ const Comps = () => {
 		setCompTitle("");
 		setCompArtist("");
 		setCompCreation("");
-		setCompImg([]);
+		setCompImg("");
 		setCompMedium("");
 		setCompPrice(0);
 	};
@@ -241,7 +241,7 @@ const Comps = () => {
 					comp.date_of_creation,
 					"",
 					comp.sale_price,
-					comp.img_url.join(", "),
+					comp.img_url,
 				];
 
 				const compResponse = await fetch("/api/appendData", {
@@ -523,7 +523,7 @@ const Comps = () => {
 										onClick={() => {
 											setCompArtist("");
 											setCompCreation("");
-											setCompImg([]);
+											setCompImg("");
 											setCompMedium("");
 											setCompPrice(0);
 											setCompTitle("");
