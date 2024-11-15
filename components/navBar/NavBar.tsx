@@ -87,6 +87,7 @@ const NavBar = () => {
 						onChange={searchArtWorks}
 					/>
 				</div>
+
 				<div className="w-40 h-16 flex-grow flex justify-center">
 					<Link href={"/"}>
 						<Image
