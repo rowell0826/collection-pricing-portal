@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "../ui/input";
 import Image from "next/image";
 import { barkerLogo, barkerLogoDk } from "../constants/constants";
@@ -10,8 +10,12 @@ import { Switch } from "../ui/switch";
 import { useTheme } from "next-themes";
 import Switch13 from "../OriginSwitch/OriginSwitch";
 import Switch11 from "../OriginSwitch/OriginSwitch";
+import BurgerButton from "../burgerButton/BurgerButton";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const NavBar = () => {
+	const [open, setOpen] = useState<boolean>(false);
+
 	const { userName } = useAuth();
 	const { theme } = useTheme();
 
@@ -20,7 +24,13 @@ const NavBar = () => {
 	return (
 		<section className="w-screen flex justify-center">
 			{/* Mobile viewport */}
-			<nav></nav>
+			<nav className="md:hidden w-full max-w-[90%] my-2 flex justify-end">
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<BurgerButton toggle={setOpen} open={open} />
+					</DropdownMenuTrigger>
+				</DropdownMenu>
+			</nav>
 
 			{/* Medium to larger viewport */}
 			<nav
