@@ -275,13 +275,14 @@ const Comps = () => {
 	return (
 		<SidebarProvider>
 			<div className="flex w-screen h-screen">
-				<div className="flex-1 flex flex-col">
-					<div>
-						<Button className="ml-4 mt-4 " size={"sm"}>
+				<div className="w-full flex flex-col">
+					<div className="h-[10%] flex justify-between items-center">
+						<Button className="ml-4" size={"sm"}>
 							<Link href={"/"}>
 								<ArrowLeft />
 							</Link>
 						</Button>
+						<SidebarTrigger className="mr-11" />
 					</div>
 					<div className="h-screen flex justify-center items-center gap-4">
 						<Card
@@ -384,12 +385,9 @@ const Comps = () => {
 				</div>
 
 				{/* Side Dashboard */}
-				<SidebarTrigger />
-				<Sidebar
-					className="w-1/5 h-screen p-4 border-l border-gray-200 min-w-[240px]"
-					side="right"
-				>
-					<Tabs>
+
+				<Sidebar className="w-1/5 h-screen p-4 border-l border-gray-200" side="right">
+					<Tabs className="relative w-full">
 						<TabsList>
 							<TabsTrigger value="artwork">Artwork</TabsTrigger>
 							<TabsTrigger value="comparables">Comparables</TabsTrigger>

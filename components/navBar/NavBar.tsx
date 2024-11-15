@@ -18,7 +18,7 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
-import { Button } from "../ui/button";
+
 
 const NavBar = () => {
 	const [open, setOpen] = useState<boolean>(false);
