@@ -31,10 +31,19 @@ const NavBar = () => {
 	return (
 		<section className="w-screen flex justify-center">
 			{/* Mobile viewport */}
-			<nav className="md:hidden w-full max-w-[90%] my-2 flex justify-end">
+			<nav className="md:hidden w-full max-w-[90%] my-2 flex justify-between items-center">
+				<div className="w-40 h-16 flex-grow flex justify-center">
+					<Link href={"/"}>
+						<Image
+							src={theme === "dark" ? barkerLogoDk : barkerLogo}
+							alt="barker logo"
+							className="w-full h-full max-w-[160px]"
+						/>
+					</Link>
+				</div>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<div>
+						<div className="ml-auto mr-4">
 							<BurgerButton toggle={setOpen} open={open} />
 						</div>
 					</DropdownMenuTrigger>
@@ -78,12 +87,12 @@ const NavBar = () => {
 						onChange={searchArtWorks}
 					/>
 				</div>
-				<div className="w-40 h-16 flex justify-center">
+				<div className="w-40 h-16 flex-grow flex justify-center">
 					<Link href={"/"}>
 						<Image
 							src={theme === "dark" ? barkerLogoDk : barkerLogo}
 							alt="barker logo"
-							className="w-full h-full"
+							className="w-full h-full max-w-[160px]"
 						/>
 					</Link>
 				</div>
