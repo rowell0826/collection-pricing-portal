@@ -6,17 +6,24 @@ import { barkerLogo, barkerLogoDk } from "../constants/constants";
 import Link from "next/link";
 import { useAuth } from "@/lib/context/authContext/AuthContext";
 import { signOutUser } from "@/lib/firebase/firebase";
-import { Switch } from "../ui/switch";
 import { useTheme } from "next-themes";
-import Switch13 from "../OriginSwitch/OriginSwitch";
 import Switch11 from "../OriginSwitch/OriginSwitch";
 import BurgerButton from "../burgerButton/BurgerButton";
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
+import { Button } from "../ui/button";
 
 const NavBar = () => {
 	const [open, setOpen] = useState<boolean>(false);
 
-	const { userName } = useAuth();
+	const { userName, role } = useAuth();
 	const { theme } = useTheme();
 
 	const searchArtWorks = () => {};
@@ -27,8 +34,31 @@ const NavBar = () => {
 			<nav className="md:hidden w-full max-w-[90%] my-2 flex justify-end">
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
-						<BurgerButton toggle={setOpen} open={open} />
+						<div>
+							<BurgerButton toggle={setOpen} open={open} />
+						</div>
 					</DropdownMenuTrigger>
+					<DropdownMenuContent className="w-56">
+						<DropdownMenuLabel>
+							<div className="flex justify-between">
+								<p>{userName}</p>
+								<p className="text-foreground font-extralight font-">{role}</p>
+							</div>
+						</DropdownMenuLabel>
+						<DropdownMenuSeparator className="bg-gray-400" />
+						<DropdownMenuGroup>
+							<DropdownMenuItem className="cursor-pointer">
+								<Link href={"/addArtWork"}>ADD ARTWORK</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem className="cursor-pointer">
+								<Link href={"/comps"}>MAKE COMPARABLES</Link>
+							</DropdownMenuItem>
+							<DropdownMenuSeparator className="bg-gray-400" />
+							<DropdownMenuItem className="cursor-pointer" onClick={signOutUser}>
+								SIGNOUT
+							</DropdownMenuItem>
+						</DropdownMenuGroup>
+					</DropdownMenuContent>
 				</DropdownMenu>
 			</nav>
 
