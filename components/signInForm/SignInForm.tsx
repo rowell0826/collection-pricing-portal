@@ -123,12 +123,15 @@ export default function SignInForm() {
 									render={({ field }) => {
 										return (
 											<FormItem>
-												<FormLabel>{labelText}</FormLabel>
+												<FormLabel className="text-black">
+													{labelText}
+												</FormLabel>
 												<FormControl>
 													<Input
 														placeholder={placeHolderText}
 														type={inputType}
 														{...field}
+														className="text-black"
 													/>
 												</FormControl>
 												<FormMessage>
@@ -147,7 +150,7 @@ export default function SignInForm() {
 							)
 						)}
 
-						<div className="flex flex-col justify-center items-center gap-4 text-foreground">
+						<div className="flex flex-col justify-center items-center gap-4 ">
 							<Button type="submit" className="w-full" variant={"default"}>
 								Sign In
 							</Button>
