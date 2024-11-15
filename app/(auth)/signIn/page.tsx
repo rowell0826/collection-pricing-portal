@@ -1,3 +1,4 @@
+"use client";
 import { barkerLogo, barkerLogoDk } from "@/components/constants/constants";
 import SignInForm from "@/components/signInForm/SignInForm";
 import { useTheme } from "next-themes";
