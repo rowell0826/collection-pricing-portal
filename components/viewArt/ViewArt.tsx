@@ -82,9 +82,11 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 			{/* Side Dashboard */}
 			<Card className="relative md:h-screen md:w-[20%] shadow-lg p-6">
 				<CardHeader>
-					<CardTitle className="font-semibold text-md">{title}</CardTitle>
+					<CardTitle className="font-semibold text-md max-h-12 overflow-y-scroll scrollbar-hide">
+						{title}
+					</CardTitle>
 				</CardHeader>
-				<CardContent className="flex flex-col gap-4">
+				<CardContent className="flex flex-col gap-4 max-h-96 overflow-y-scroll scrollbar-hide">
 					<h4 className="text-md font-medium">
 						{artist_full_name}
 						<span className="text-gray-500 text-sm">
