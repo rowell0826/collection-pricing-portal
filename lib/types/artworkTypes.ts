@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export interface ArtWork {
 	id: string;
 	title: string;
@@ -16,4 +18,9 @@ export interface ArtWork {
 	img_url: string;
 	aspect_ratio: number;
 	area: number;
+}
+
+export interface ArtworkContextProps {
+	artworkData: ArtWork[];
+	setArtworkData: Dispatch<SetStateAction<ArtWork[]>>;
 }

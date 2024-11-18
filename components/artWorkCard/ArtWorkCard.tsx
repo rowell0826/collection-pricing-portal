@@ -1,36 +1,11 @@
 "use client";
-import { db } from "@/lib/firebase/firebase";
-import { ArtWork } from "@/lib/types/artworkTypes";
-import { collection, getDocs, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import Link from "next/link";
 import Image from "next/image";
+import { useArtwork } from "@/lib/context/artworkContext/ArtworkContext";
 
 const ArtWorkCard = () => {
-	const [artworkData, setArtworkData] = useState<ArtWork[]>([]);
-
-	useEffect(() => {
-		const fetchArtworkData = async () => {
-			try {
-				const q = query(collection(db, "artworks"));
-				const artworkSnapshot = await getDocs(q);
-
-				if (!artworkSnapshot.empty) {
-					const artworks: ArtWork[] = [];
-					artworkSnapshot.forEach((doc) => {
-						const data = doc.data() as ArtWork;
-						artworks.push(data);
-					});
-					setArtworkData(artworks);
-				}
-			} catch (error) {
-				console.error("Failed to fetch data", error);
-			}
-		};
-
-		fetchArtworkData();
-	}, []);
+	const { artworkData } = useArtwork();
 
 	return (
 		<div className="w-screen flex flex-col justify-start items-center">
