@@ -56,7 +56,7 @@ const ParticlesComponent = () => {
 				},
 				links: {
 					color: "#ffffff",
-					distance: 60,
+					distance: 80,
 					enable: true,
 					opacity: 0.5,
 					width: 1,
