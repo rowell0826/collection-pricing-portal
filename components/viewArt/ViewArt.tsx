@@ -67,15 +67,12 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 					</Button>
 				</Link>
 				<div className="relative h-screen w-screen bg-gray-200">
-					{artwork?.img_url.map((img, index) => (
-						<Image
-							key={index}
-							src={img}
-							alt="Artwork image"
-							fill
-							className="object-cover shadow-lg"
-						/>
-					))}
+					<Image
+						src={artwork?.img_url as string}
+						alt="Artwork image"
+						fill
+						className="object-cover shadow-lg"
+					/>
 				</div>
 			</div>
 
@@ -86,7 +83,7 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 						{title}
 					</CardTitle>
 				</CardHeader>
-				<CardContent className="flex flex-col gap-4 max-h-96 overflow-y-scroll scrollbar-hide">
+				<CardContent className="relative flex flex-col gap-4 max-h-[80%] overflow-y-scroll scrollbar-hide">
 					<h4 className="text-md font-medium">
 						{artist_full_name}
 						<span className="text-gray-500 text-sm">
