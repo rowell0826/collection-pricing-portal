@@ -85,7 +85,7 @@ const NavBar = () => {
 					</Link>
 					<Input
 						alt="search"
-						placeholder="Search artwork"
+						placeholder="Search artwork by title or artist"
 						className="rounded-lg"
 						onChange={searchHandler}
 					/>
