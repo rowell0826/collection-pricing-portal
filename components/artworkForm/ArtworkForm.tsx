@@ -77,7 +77,7 @@ const ArtworkForm = () => {
 				artist_birth: NaN ? "" : Number(data.artist_birth),
 				date_of_creation: NaN ? "" : Number(data.date_of_creation),
 				medium: data.medium,
-				img_url: [data.img_url],
+				img_url: data.img_url,
 				description: data.description,
 				provenance: data.provenance,
 				dimensions: {

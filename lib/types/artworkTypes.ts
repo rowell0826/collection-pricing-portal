@@ -13,7 +13,7 @@ export interface ArtWork {
 	sale_price: number;
 	description: string;
 	provenance: string;
-	img_url: string[];
+	img_url: string;
 	aspect_ratio: number;
 	area: number;
 }
