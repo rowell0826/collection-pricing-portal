@@ -37,6 +37,7 @@ export const ArtworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
 		const lowerCaseQuery = query.toLowerCase();
 		const filtered = artworkData.filter(
 			(artwork) =>
+				artwork.id.toLowerCase().includes(lowerCaseQuery) ||
 				artwork.title.toLowerCase().includes(lowerCaseQuery) ||
 				artwork.artist_full_name.toLowerCase().includes(lowerCaseQuery)
 		);
