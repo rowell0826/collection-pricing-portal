@@ -282,7 +282,6 @@ const Comps = () => {
 							<ArrowLeft />
 						</Link>
 					</Button>
-					<SidebarTrigger className="mr-11" />
 				</div>
 				<div className="w-full flex flex-col">
 					<div className="h-screen flex justify-center items-center gap-4">
@@ -386,7 +385,9 @@ const Comps = () => {
 				</div>
 
 				{/* Side Dashboard */}
-
+				<div className="relative w-[8%] h-[10%] flex justify-between items-center">
+					<SidebarTrigger className="" />
+				</div>
 				<Sidebar className="w-1/5 h-screen p-4 border-l border-gray-200" side="right">
 					<Tabs className="relative w-full">
 						<TabsList>
