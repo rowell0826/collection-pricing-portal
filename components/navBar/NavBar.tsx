@@ -18,15 +18,18 @@ import {
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
-
+import { useArtwork } from "@/lib/context/artworkContext/ArtworkContext";
 
 const NavBar = () => {
 	const [open, setOpen] = useState<boolean>(false);
 
 	const { userName, role } = useAuth();
+	const { searchArtwork } = useArtwork();
 	const { theme } = useTheme();
 
-	const searchArtWorks = () => {};
+	const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		searchArtwork(e.target.value);
+	};
 
 	return (
 		<section className="w-screen flex justify-center">
@@ -84,7 +87,7 @@ const NavBar = () => {
 						alt="search"
 						placeholder="Search artwork"
 						className="rounded-lg"
-						onChange={searchArtWorks}
+						onChange={searchHandler}
 					/>
 				</div>
 

@@ -22,5 +22,7 @@ export interface ArtWork {
 
 export interface ArtworkContextProps {
 	artworkData: ArtWork[];
+	filteredData: ArtWork[];
 	setArtworkData: Dispatch<SetStateAction<ArtWork[]>>;
+	searchArtwork: (q: string) => void;
 }

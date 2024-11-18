@@ -1,5 +1,4 @@
 "use client";
-
 import { db } from "@/lib/firebase/firebase";
 import { ArtWork, ArtworkContextProps } from "@/lib/types/artworkTypes";
 import { collection, getDocs, query } from "firebase/firestore";
@@ -9,6 +8,7 @@ const ArtworkContext = createContext<ArtworkContextProps | undefined>(undefined)
 
 export const ArtworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [artworkData, setArtworkData] = useState<ArtWork[]>([]);
+	const [filteredData, setFilteredData] = useState<ArtWork[]>([]);
 
 	useEffect(() => {
 		const fetchArtworkData = async () => {
@@ -23,6 +23,7 @@ export const ArtworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
 						artworks.push(data);
 					});
 					setArtworkData(artworks);
+					setFilteredData(artworks);
 				}
 			} catch (error) {
 				console.error("Failed to fetch data", error);
@@ -32,8 +33,20 @@ export const ArtworkProvider: React.FC<{ children: React.ReactNode }> = ({ child
 		fetchArtworkData();
 	}, []);
 
+	const searchArtwork = (query: string) => {
+		const lowerCaseQuery = query.toLowerCase();
+		const filtered = artworkData.filter(
+			(artwork) =>
+				artwork.title.toLowerCase().includes(lowerCaseQuery) ||
+				artwork.artist_full_name.toLowerCase().includes(lowerCaseQuery)
+		);
+		setFilteredData(filtered);
+	};
+
 	return (
-		<ArtworkContext.Provider value={{ artworkData, setArtworkData }}>
+		<ArtworkContext.Provider
+			value={{ artworkData, filteredData, setArtworkData, searchArtwork }}
+		>
 			{children}
 		</ArtworkContext.Provider>
 	);

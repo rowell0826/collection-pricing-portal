@@ -5,14 +5,14 @@ import Image from "next/image";
 import { useArtwork } from "@/lib/context/artworkContext/ArtworkContext";
 
 const ArtWorkCard = () => {
-	const { artworkData } = useArtwork();
+	const { filteredData } = useArtwork();
 
 	return (
 		<div className="w-screen flex flex-col justify-start items-center">
 			<h2 className="my-4">ART COLLECTIONS</h2>
 			<div className="relative w-full h-[100%] flex justify-center items-center">
 				<div className="relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center items-center ml-4">
-					{artworkData.map((artwork) => (
+					{filteredData.map((artwork) => (
 						<Card
 							key={artwork.id}
 							className="rounded-md h-[380px] w-[260px] min-w-[240px]"
