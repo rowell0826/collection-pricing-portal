@@ -155,6 +155,7 @@ const Comps = () => {
 		);
 	}, [compArtist, compTitle, compMedium, compCreation, compPrice, compImg]);
 
+	// Send artworks and comps to data science gsheet
 	const pricingHandler = async () => {
 		const {
 			title,
@@ -275,15 +276,15 @@ const Comps = () => {
 	return (
 		<SidebarProvider>
 			<div className="flex w-screen h-screen">
+				<div className="h-[10%] flex justify-between items-center">
+					<Button className="ml-4" size={"sm"}>
+						<Link href={"/"}>
+							<ArrowLeft />
+						</Link>
+					</Button>
+					<SidebarTrigger className="mr-11" />
+				</div>
 				<div className="w-full flex flex-col">
-					<div className="h-[10%] flex justify-between items-center">
-						<Button className="ml-4" size={"sm"}>
-							<Link href={"/"}>
-								<ArrowLeft />
-							</Link>
-						</Button>
-						<SidebarTrigger className="mr-11" />
-					</div>
 					<div className="h-screen flex justify-center items-center gap-4">
 						<Card
 							className={`${

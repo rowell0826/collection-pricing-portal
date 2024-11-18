@@ -151,7 +151,7 @@ export default function SignInForm() {
 						)}
 
 						<div className="flex flex-col justify-center items-center gap-4 ">
-							<Button type="submit" className="w-full" variant={"default"}>
+							<Button type="submit" className="w-full" variant={"secondary"}>
 								Sign In
 							</Button>
 							<Button
