@@ -45,7 +45,11 @@ const ArtWorkCard = () => {
 							<Link href={`/${artwork.id}`} className="rounded-md">
 								<CardHeader className="relative h-[50%]">
 									<Image
-										src={artwork.img_url[0]}
+										src={
+											Array.isArray(artwork.img_url)
+												? artwork.img_url[0]
+												: artwork.img_url
+										}
 										alt="Artwork Image"
 										priority
 										fill
