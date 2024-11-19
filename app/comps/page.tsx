@@ -41,6 +41,7 @@ const Comps = () => {
 	const [searchResults, setSearchResults] = useState<Partial<ArtWork>>(defaultValue);
 	const [isSearchEmpty, setIsSearchEmpty] = useState<boolean>(true);
 	const [isCompEmpty, setIsCompEmpty] = useState<boolean>(true);
+	const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
 	// Comps state handlers
 	const [comps, setComps] = useState<Comp[]>([]);
@@ -168,6 +169,8 @@ const Comps = () => {
 
 	// Send artworks and comps to data science gsheet
 	const pricingHandler = async () => {
+		setIsDisabled(true);
+
 		const {
 			title,
 			artist_full_name,
@@ -303,6 +306,8 @@ const Comps = () => {
 			showAlert("success", "Data has been sent");
 		} catch (error) {
 			console.error("Network or unexpected error:", error);
+		} finally {
+			setIsDisabled(false);
 		}
 	};
 
@@ -395,7 +400,9 @@ const Comps = () => {
 						))}
 					</div>
 					<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
-						<Button onClick={pricingHandler}>Send for Pricing</Button>
+						<Button onClick={pricingHandler} disabled={isDisabled}>
+							Send for Pricing
+						</Button>
 						<Button
 							onClick={() => {
 								setSearchResults(defaultValue);
