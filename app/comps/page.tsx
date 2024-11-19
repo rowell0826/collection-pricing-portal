@@ -294,6 +294,7 @@ const Comps = () => {
 				try {
 					const result = JSON.parse(compsTextResponseToSrDataMgr);
 					console.log(result);
+					showAlert("success", "Data has been sent");
 				} catch (error) {
 					console.error("Error parsing JSON:", error);
 				}
