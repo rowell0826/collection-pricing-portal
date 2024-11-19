@@ -294,13 +294,13 @@ const Comps = () => {
 				try {
 					const result = JSON.parse(compsTextResponseToSrDataMgr);
 					console.log(result);
-					showAlert("success", "Data has been sent");
 				} catch (error) {
 					console.error("Error parsing JSON:", error);
 				}
 			} else {
 				console.error("Error response:", compsTextResponseToSrDataMgr);
 			}
+			showAlert("success", "Data has been sent");
 		} catch (error) {
 			console.error("Network or unexpected error:", error);
 		}
