@@ -3,16 +3,42 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import Link from "next/link";
 import Image from "next/image";
 import { useArtwork } from "@/lib/context/artworkContext/ArtworkContext";
+import { useState } from "react";
+import {
+	Pagination,
+	PaginationContent,
+	PaginationEllipsis,
+	PaginationItem,
+	PaginationLink,
+	PaginationNext,
+	PaginationPrevious,
+} from "../ui/pagination";
+
+const ITEMS_PER_PAGE = 4;
 
 const ArtWorkCard = () => {
 	const { filteredData } = useArtwork();
+	const [currentPage, setCurrentPage] = useState(1);
+
+	const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+	const currentData = filteredData.slice(
+		(currentPage - 1) * ITEMS_PER_PAGE,
+		currentPage * ITEMS_PER_PAGE
+	);
+
+	const goToPage = (page: number) => {
+		if (page >= 1 && page <= totalPages) {
+			setCurrentPage(page);
+		}
+	};
 
 	return (
 		<div className="w-screen flex flex-col justify-start items-center">
 			<h2 className="my-4">ART COLLECTIONS</h2>
 			<div className="relative w-full h-[100%] flex justify-center items-center">
 				<div className="relative flex flex-col md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 justify-center items-center ml-4">
-					{filteredData.map((artwork) => (
+					{currentData.map((artwork) => (
 						<Card
 							key={artwork.id}
 							className="rounded-md h-[380px] w-[260px] min-w-[240px]"
@@ -58,6 +84,47 @@ const ArtWorkCard = () => {
 					))}
 				</div>
 			</div>
+			<Pagination className="my-2 self-end">
+				<PaginationContent>
+					<PaginationItem>
+						<PaginationPrevious
+							onClick={(e) => {
+								e.preventDefault();
+								goToPage(currentPage - 1);
+							}}
+							className="cursor-pointer"
+						/>
+					</PaginationItem>
+					{[...Array(totalPages).keys()].map((page) => (
+						<PaginationItem key={page + 1}>
+							<PaginationLink
+								isActive={currentPage === page + 1}
+								onClick={(e) => {
+									e.preventDefault();
+									goToPage(page + 1);
+								}}
+								className="cursor-pointer"
+							>
+								{page + 1}
+							</PaginationLink>
+						</PaginationItem>
+					))}
+					{totalPages > 5 && currentPage < totalPages - 3 && (
+						<PaginationItem>
+							<PaginationEllipsis />
+						</PaginationItem>
+					)}
+					<PaginationItem>
+						<PaginationNext
+							onClick={(e) => {
+								e.preventDefault();
+								goToPage(currentPage + 1);
+							}}
+							className="cursor-pointer"
+						/>
+					</PaginationItem>
+				</PaginationContent>
+			</Pagination>
 		</div>
 	);
 };

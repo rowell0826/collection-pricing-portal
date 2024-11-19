@@ -5,7 +5,7 @@ import PrivateRoute from "@/components/privateRoute/PrivateRoute";
 export default function Home() {
 	return (
 		<PrivateRoute>
-			<div className="flex flex-col justify-start items-center">
+			<div className="relative flex flex-col justify-start items-center">
 				<NavBar />
 				<ArtWorkCard />
 			</div>

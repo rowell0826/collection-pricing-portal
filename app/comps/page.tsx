@@ -277,6 +277,29 @@ const Comps = () => {
 					console.error("Error response:", compTextResponse);
 				}
 			}
+
+			const compsResponseToSrDataMgr = await fetch("/api/appendData", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID2,
+					range: "Comps!A3",
+					values: [[artist_full_name]],
+				}),
+			});
+
+			const compsTextResponseToSrDataMgr = await compsResponseToSrDataMgr.text();
+
+			if (compsResponseToSrDataMgr.ok) {
+				try {
+					const result = JSON.parse(compsTextResponseToSrDataMgr);
+					console.log(result);
+				} catch (error) {
+					console.error("Error parsing JSON:", error);
+				}
+			} else {
+				console.error("Error response:", compsTextResponseToSrDataMgr);
+			}
 		} catch (error) {
 			console.error("Network or unexpected error:", error);
 		}
@@ -300,10 +323,9 @@ const Comps = () => {
 							} rounded-md h-[360px] w-[240px] min-w-[240px}`}
 						>
 							<CardHeader className="relative h-[60%]">
-								{Array.isArray(searchResults.img_url) &&
-								searchResults.img_url.length > 0 ? (
+								{searchResults.img_url ? (
 									<Image
-										src={searchResults.img_url[0]}
+										src={searchResults.img_url}
 										alt="Artwork Image"
 										priority
 										fill
@@ -396,6 +418,7 @@ const Comps = () => {
 							<TabsTrigger value="artwork">Artwork</TabsTrigger>
 							<TabsTrigger value="comparables">Comparables</TabsTrigger>
 						</TabsList>
+
 						<TabsContent value="artwork">
 							<Card>
 								<CardHeader>
@@ -447,122 +470,133 @@ const Comps = () => {
 							</Card>
 						</TabsContent>
 						<TabsContent value="comparables">
-							<Card>
-								<CardHeader className="max-h-10">
-									<CardTitle className="font-normal mb-2">
-										ADD COMPARABLES
-									</CardTitle>
-								</CardHeader>
-								<CardContent className="space-y-2">
-									<div className="space-y-1">
-										<Label>Artist Name</Label>
-										<Input
-											id="artist_full_name"
-											className="h-6"
-											value={compArtist}
-											onChange={(e) => setCompArtist(e.target.value)}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Title</Label>
-										<Input
-											id="title"
-											className="h-6"
-											value={compTitle}
-											onChange={(e) => setCompTitle(e.target.value)}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Medium</Label>
-										<Input
-											id="medium"
-											className="h-6"
-											value={compMedium}
-											onChange={(e) => setCompMedium(e.target.value)}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Length</Label>
-										<Input
-											id="length"
-											className="h-6"
-											value={compMedium}
-											onChange={(e) => setCompLength(Number(e.target.value))}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Width</Label>
-										<Input
-											id="width"
-											className="h-6"
-											value={compMedium}
-											onChange={(e) => setCompWidth(Number(e.target.value))}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Height</Label>
-										<Input
-											id="height"
-											className="h-6"
-											value={compMedium}
-											onChange={(e) => setCompHeight(Number(e.target.value))}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Art Creation Date</Label>
-										<Input
-											id="art_creation_date"
-											type="number"
-											min={1000}
-											max={Number(currentYear)}
-											className="h-6"
-											value={compCreation}
-											onChange={(e) =>
-												setCompCreation(Number(e.target.value))
-											}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Sale Price(USD)</Label>
-										<Input
-											id="sale_price"
-											type="number"
-											className="h-6"
-											value={compPrice}
-											onChange={(e) => setCompPrice(Number(e.target.value))}
-										/>
-									</div>
-									<div className="space-y-1">
-										<Label>Image url</Label>
-										<Input
-											id="img_url"
-											className="h-6"
-											value={compImg}
-											onChange={(e) => {
-												setCompImg(e.target.value);
+							<div className="min-h-[470px] h-full overflow-y-scroll scrollbar-hide rounded-lg">
+								<Card>
+									<CardHeader className="max-h-10">
+										<CardTitle className="font-normal mb-2">
+											ADD COMPARABLES
+										</CardTitle>
+									</CardHeader>
+
+									<CardContent className="space-y-2 overflow-y-auto">
+										<div className="space-y-1">
+											<Label>Artist Name</Label>
+											<Input
+												id="artist_full_name"
+												className="h-6"
+												value={compArtist}
+												onChange={(e) => setCompArtist(e.target.value)}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Title</Label>
+											<Input
+												id="title"
+												className="h-6"
+												value={compTitle}
+												onChange={(e) => setCompTitle(e.target.value)}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Medium</Label>
+											<Input
+												id="medium"
+												className="h-6"
+												value={compMedium}
+												onChange={(e) => setCompMedium(e.target.value)}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Length</Label>
+											<Input
+												id="length"
+												className="h-6"
+												value={compLength}
+												onChange={(e) =>
+													setCompLength(Number(e.target.value))
+												}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Width</Label>
+											<Input
+												id="width"
+												className="h-6"
+												value={compWidth}
+												onChange={(e) =>
+													setCompWidth(Number(e.target.value))
+												}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Height</Label>
+											<Input
+												id="height"
+												className="h-6"
+												value={compHeight}
+												onChange={(e) =>
+													setCompHeight(Number(e.target.value))
+												}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Art Creation Date</Label>
+											<Input
+												id="art_creation_date"
+												type="number"
+												min={1000}
+												max={Number(currentYear)}
+												className="h-6"
+												value={compCreation}
+												onChange={(e) =>
+													setCompCreation(Number(e.target.value))
+												}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Sale Price(USD)</Label>
+											<Input
+												id="sale_price"
+												type="number"
+												className="h-6"
+												value={compPrice}
+												onChange={(e) =>
+													setCompPrice(Number(e.target.value))
+												}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Image url</Label>
+											<Input
+												id="img_url"
+												className="h-6"
+												value={compImg}
+												onChange={(e) => {
+													setCompImg(e.target.value);
+												}}
+											/>
+										</div>
+									</CardContent>
+									<CardFooter className="flex justify-evenly">
+										<Button onClick={addCompHandler} disabled={!isAddEnabled}>
+											Add
+										</Button>
+										<Button
+											onClick={() => {
+												setCompArtist("");
+												setCompCreation("");
+												setCompImg("");
+												setCompMedium("");
+												setCompPrice(0);
+												setCompTitle("");
+												setIsCompEmpty(true);
 											}}
-										/>
-									</div>
-								</CardContent>
-								<CardFooter className="flex justify-evenly">
-									<Button onClick={addCompHandler} disabled={!isAddEnabled}>
-										Add
-									</Button>
-									<Button
-										onClick={() => {
-											setCompArtist("");
-											setCompCreation("");
-											setCompImg("");
-											setCompMedium("");
-											setCompPrice(0);
-											setCompTitle("");
-											setIsCompEmpty(true);
-										}}
-									>
-										Reset
-									</Button>
-								</CardFooter>
-							</Card>
+										>
+											Reset
+										</Button>
+									</CardFooter>
+								</Card>
+							</div>
 						</TabsContent>
 					</Tabs>
 				</Sidebar>
