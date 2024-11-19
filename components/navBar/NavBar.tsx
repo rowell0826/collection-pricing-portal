@@ -59,6 +59,14 @@ const NavBar = () => {
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator className="bg-gray-400" />
 						<DropdownMenuGroup>
+							<DropdownMenuLabel>
+								<Input
+									alt="search"
+									placeholder="Search artwork by title or artist"
+									onChange={searchHandler}
+									className="text-[10px]"
+								/>
+							</DropdownMenuLabel>
 							<DropdownMenuItem className="cursor-pointer">
 								<Link href={"/addArtWork"}>ADD ARTWORK</Link>
 							</DropdownMenuItem>
