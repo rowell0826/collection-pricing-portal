@@ -50,7 +50,6 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 		artist_birth,
 		description,
 		provenance,
-		sale_price,
 		medium,
 		dimensions: { length, width, height },
 		area,
@@ -104,9 +103,6 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 						</div>
 					</div>
 				</CardContent>
-				<CardFooter className="text-xs text-foreground font-medium">
-					Sale price: {sale_price} USD
-				</CardFooter>
 			</Card>
 		</section>
 	);
