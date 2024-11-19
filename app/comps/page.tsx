@@ -19,6 +19,10 @@ export interface Comp {
 	title: string;
 	medium: string;
 	date_of_creation: number | "";
+	date_sold: number | "";
+	length: number | "";
+	width: number | "";
+	height: number | "";
 	sale_price: number;
 	img_url: string;
 }
@@ -28,7 +32,6 @@ const defaultValue: Partial<ArtWork> = {
 	artist_full_name: "",
 	medium: "",
 	date_of_creation: "",
-	sale_price: 0,
 };
 
 const Comps = () => {
@@ -45,7 +48,11 @@ const Comps = () => {
 	const [compArtist, setCompArtist] = useState<string>("");
 	const [compMedium, setCompMedium] = useState<string>("");
 	const [compCreation, setCompCreation] = useState<number | "">("");
+	const [compDateSold, setCompDateSold] = useState<number | "">("");
 	const [compPrice, setCompPrice] = useState<number>(0);
+	const [compLength, setCompLength] = useState<number>(0);
+	const [compHeight, setCompHeight] = useState<number>(0);
+	const [compWidth, setCompWidth] = useState<number>(0);
 	const [compImg, setCompImg] = useState<string>("");
 
 	const currentYear = new Date().getFullYear();
@@ -127,6 +134,10 @@ const Comps = () => {
 			medium: compMedium,
 			date_of_creation: compCreation,
 			sale_price: compPrice,
+			length: compLength,
+			width: compWidth,
+			height: compHeight,
+			date_sold: compDateSold,
 			img_url: compImg,
 		};
 		setComps((prevComps) => {
@@ -162,7 +173,6 @@ const Comps = () => {
 			artist_full_name,
 			medium,
 			date_of_creation,
-			sale_price,
 			artist_birth,
 			description,
 			provenance,
@@ -211,7 +221,6 @@ const Comps = () => {
 							aspect_ratio,
 							area,
 							validImgUrl,
-							sale_price,
 						],
 					],
 				}),
@@ -236,11 +245,11 @@ const Comps = () => {
 				const compData = [
 					comp.title,
 					comp.medium,
-					"",
-					"",
-					"",
+					comp.length,
+					comp.width,
+					comp.height,
 					comp.date_of_creation,
-					"",
+					comp.date_sold,
 					comp.sale_price,
 					comp.img_url,
 				];
@@ -326,13 +335,6 @@ const Comps = () => {
 										? ""
 										: searchResults.date_of_creation}
 								</p>
-
-								<span className="text-[0.6rem]">
-									Sale Price:{" "}
-									{Number.isNaN(searchResults.sale_price)
-										? ""
-										: `${searchResults.sale_price} usd`}
-								</span>
 							</CardContent>
 						</Card>
 
@@ -477,6 +479,33 @@ const Comps = () => {
 											className="h-6"
 											value={compMedium}
 											onChange={(e) => setCompMedium(e.target.value)}
+										/>
+									</div>
+									<div className="space-y-1">
+										<Label>Length</Label>
+										<Input
+											id="length"
+											className="h-6"
+											value={compMedium}
+											onChange={(e) => setCompLength(Number(e.target.value))}
+										/>
+									</div>
+									<div className="space-y-1">
+										<Label>Width</Label>
+										<Input
+											id="width"
+											className="h-6"
+											value={compMedium}
+											onChange={(e) => setCompWidth(Number(e.target.value))}
+										/>
+									</div>
+									<div className="space-y-1">
+										<Label>Height</Label>
+										<Input
+											id="height"
+											className="h-6"
+											value={compMedium}
+											onChange={(e) => setCompHeight(Number(e.target.value))}
 										/>
 									</div>
 									<div className="space-y-1">

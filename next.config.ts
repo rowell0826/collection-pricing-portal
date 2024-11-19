@@ -12,10 +12,7 @@ const nextConfig: NextConfig = {
 		return config;
 	},
 	images: {
-		remotePatterns: [
-			{ protocol: "https", hostname: "www.christies.com" },
-			{ protocol: "https", hostname: "via.placeholder.com" },
-		],
+		remotePatterns: [{ protocol: "https", hostname: "**" }],
 	},
 };
 

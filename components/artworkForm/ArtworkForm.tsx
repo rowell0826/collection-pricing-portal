@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { ArtWork } from "@/lib/types/artworkTypes";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase";
-import { generateUniqueId } from "@/lib/helperFunc";
+import { generateUniqueId, showAlert } from "@/lib/helperFunc";
 
 const formSchema = z.object({
 	title: z.string().min(1, { message: "Please provide an art title" }),
@@ -35,7 +35,6 @@ const formSchema = z.object({
 	aspect_ratio: z.number().default(0),
 	area: z.number().default(0),
 	img_url: z.string(),
-	sale_price: z.number().default(0),
 });
 
 const ArtworkForm = () => {
@@ -88,13 +87,12 @@ const ArtworkForm = () => {
 				aspect_ratio:
 					data.height && data.width ? Number((data.width / data.height).toFixed(2)) : 0,
 				area: data.height && data.width ? Number((data.width * data.height).toFixed(2)) : 0,
-				sale_price: Number(data.sale_price),
 			};
 			await setDoc(doc(db, "artworks", artworkId), artwork);
 
 			form.reset();
 
-			console.log("Artwork added");
+			showAlert("success", "Artwork added");
 		} catch (error) {
 			console.log("Failed to add to firestore collection ", error);
 		}
@@ -390,33 +388,10 @@ const ArtworkForm = () => {
 												type="number"
 												placeholder={"Enter height"}
 												{...field}
-												value={Number(field.value) ?? 0}
+												value={Number(field.value) ?? ""}
 												onChange={(e) =>
 													field.onChange(Number(e.target.value))
 												}
-											/>
-										</FormControl>
-										<FormMessage>{formState.errors.area?.message}</FormMessage>
-									</FormItem>
-								)}
-							/>
-
-							{/* Sale Price */}
-							<FormField
-								control={control}
-								name="sale_price"
-								render={({ field }) => (
-									<FormItem className="col-span-1">
-										<FormLabel>Sale Price (usd)</FormLabel>
-										<FormControl>
-											<Input
-												type="number"
-												placeholder={"Enter sale price"}
-												{...field}
-												value={Number(field.value) ?? 0}
-												onChange={(e) => {
-													field.onChange(Number(e.target.value));
-												}}
 											/>
 										</FormControl>
 										<FormMessage>{formState.errors.area?.message}</FormMessage>

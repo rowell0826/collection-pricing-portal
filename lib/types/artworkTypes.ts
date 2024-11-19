@@ -12,7 +12,6 @@ export interface ArtWork {
 		height: number | string;
 	};
 	medium: string;
-	sale_price: number;
 	description: string;
 	provenance: string;
 	img_url: string;
