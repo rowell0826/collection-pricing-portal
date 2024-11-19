@@ -19,7 +19,7 @@ export interface Comp {
 	title: string;
 	medium: string;
 	date_of_creation: number | "";
-	date_sold: number | "";
+	date_sold: string | "";
 	length: number | "";
 	width: number | "";
 	height: number | "";
@@ -48,7 +48,7 @@ const Comps = () => {
 	const [compArtist, setCompArtist] = useState<string>("");
 	const [compMedium, setCompMedium] = useState<string>("");
 	const [compCreation, setCompCreation] = useState<number | "">("");
-	const [compDateSold, setCompDateSold] = useState<number | "">("");
+	const [compDateSold, setCompDateSold] = useState<string | "">("");
 	const [compPrice, setCompPrice] = useState<number>(0);
 	const [compLength, setCompLength] = useState<number>(0);
 	const [compHeight, setCompHeight] = useState<number>(0);
@@ -563,6 +563,21 @@ const Comps = () => {
 												onChange={(e) =>
 													setCompPrice(Number(e.target.value))
 												}
+											/>
+										</div>
+										<div className="space-y-1">
+											<Label>Date Sold</Label>
+											<Input
+												id="date_sold"
+												type="date"
+												className="h-6"
+												onChange={(e) => {
+													const date = new Date(e.target.value);
+													// Set the state as a formatted string (YYYY-MM-DD)
+													setCompDateSold(
+														date.toISOString().split("T")[0]
+													); // Convert Date to string in YYYY-MM-DD format
+												}}
 											/>
 										</div>
 										<div className="space-y-1">
