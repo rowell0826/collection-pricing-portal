@@ -286,7 +286,7 @@ const Comps = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID2,
-					range: "Comps!A3",
+					range: "Comps!A2",
 					values: [[artist_full_name]],
 				}),
 			});
