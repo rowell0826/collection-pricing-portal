@@ -480,7 +480,7 @@ const Comps = () => {
 						</TabsContent>
 						<TabsContent value="comparables">
 							<div className="min-h-[470px] scrollbar-hide rounded-lg">
-								<Card className="max-h-sm:max-h-[500px]  overflow-y-scroll scrollbar-hide">
+								<Card className="max-h-md:max-h-[500px]  overflow-y-scroll scrollbar-hide">
 									<CardHeader className="max-h-10">
 										<CardTitle className="font-normal mb-2">
 											ADD COMPARABLES
