@@ -19,11 +19,11 @@ export interface Comp {
 	title: string;
 	medium: string;
 	date_of_creation: number | "";
-	date_sold: string | "";
+	date_sold: number | "";
 	length: number | "";
 	width: number | "";
 	height: number | "";
-	sale_price: number;
+	sale_price: number | "";
 	img_url: string;
 }
 
@@ -49,11 +49,11 @@ const Comps = () => {
 	const [compArtist, setCompArtist] = useState<string>("");
 	const [compMedium, setCompMedium] = useState<string>("");
 	const [compCreation, setCompCreation] = useState<number | "">("");
-	const [compDateSold, setCompDateSold] = useState<string | "">("");
-	const [compPrice, setCompPrice] = useState<number>(0);
-	const [compLength, setCompLength] = useState<number>(0);
-	const [compHeight, setCompHeight] = useState<number>(0);
-	const [compWidth, setCompWidth] = useState<number>(0);
+	const [compDateSold, setCompDateSold] = useState<number | "">("");
+	const [compPrice, setCompPrice] = useState<number | "">("");
+	const [compLength, setCompLength] = useState<number | "">("");
+	const [compHeight, setCompHeight] = useState<number | "">("");
+	const [compWidth, setCompWidth] = useState<number | "">("");
 	const [compImg, setCompImg] = useState<string>("");
 
 	const currentYear = new Date().getFullYear();
@@ -162,6 +162,7 @@ const Comps = () => {
 			compTitle.trim() !== "" &&
 			compMedium.trim() !== "" &&
 			compCreation &&
+			typeof compPrice === "number" &&
 			compPrice > 0 &&
 			compImg.length > 0
 		);
@@ -478,15 +479,15 @@ const Comps = () => {
 							</Card>
 						</TabsContent>
 						<TabsContent value="comparables">
-							<div className="min-h-[470px] h-full overflow-y-scroll scrollbar-hide rounded-lg">
-								<Card>
+							<div className="min-h-[470px] scrollbar-hide rounded-lg">
+								<Card className="max-h-sm:max-h-[500px]  overflow-y-scroll scrollbar-hide">
 									<CardHeader className="max-h-10">
 										<CardTitle className="font-normal mb-2">
 											ADD COMPARABLES
 										</CardTitle>
 									</CardHeader>
 
-									<CardContent className="space-y-2 overflow-y-auto">
+									<CardContent className="space-y-2">
 										<div className="space-y-1">
 											<Label>Artist Name</Label>
 											<Input
@@ -577,14 +578,13 @@ const Comps = () => {
 											<Label>Date Sold</Label>
 											<Input
 												id="date_sold"
-												type="date"
+												type="number"
+												min={1900}
+												max={Number(currentYear)}
 												className="h-6"
+												value={compDateSold}
 												onChange={(e) => {
-													const date = new Date(e.target.value);
-													// Set the state as a formatted string (YYYY-MM-DD)
-													setCompDateSold(
-														date.toISOString().split("T")[0]
-													); // Convert Date to string in YYYY-MM-DD format
+													setCompDateSold(Number(e.target.value));
 												}}
 											/>
 										</div>
@@ -610,7 +610,7 @@ const Comps = () => {
 												setCompCreation("");
 												setCompImg("");
 												setCompMedium("");
-												setCompPrice(0);
+												setCompPrice("");
 												setCompTitle("");
 												setIsCompEmpty(true);
 											}}

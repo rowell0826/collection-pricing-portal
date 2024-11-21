@@ -9,6 +9,10 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
+			screens: {
+				"max-h-sm": { raw: "(max-height: 650px)" },
+				"max-h-md": { raw: "(max-height: 700px)" },
+			},
 			fontSize: {
 				responsive: "clamp(1rem, 2vw + 1rem, 2.5rem)",
 			},
