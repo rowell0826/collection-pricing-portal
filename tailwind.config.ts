@@ -10,7 +10,7 @@ const config: Config = {
 	theme: {
 		extend: {
 			screens: {
-				"max-h-sm": { raw: "(max-height: 650px)" },
+				"max-h-sm": { raw: "(max-height: 680px)" },
 				"max-h-md": { raw: "(max-height: 700px)" },
 			},
 			fontSize: {
