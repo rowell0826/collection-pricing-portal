@@ -70,8 +70,6 @@ const Comps = () => {
 
 		const allArtistsMatch = comps.every((comp) => comp.artist_full_name === artist_full_name);
 
-		console.log("All artist match ", allArtistsMatch);
-
 		if (!allArtistsMatch) {
 			showAlert("info", "Artist names do not match across all comps. Aborting operation.");
 			console.log("Artist names do not match across all comps. Aborting operation.");
@@ -195,6 +193,8 @@ const Comps = () => {
 			setIsDisabled(false);
 		}
 	};
+
+	console.log("Search Result ", searchResults);
 
 	return (
 		<SidebarProvider>

@@ -1,12 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useComps } from "@/lib/context/compsContext/ComparablesContext";
 import { db } from "@/lib/firebase/firebase";
 import { ArtWork } from "@/lib/types/artworkTypes";
 import { doc, getDoc } from "firebase/firestore";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface ViewArtProps {
@@ -17,6 +19,17 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 	const [artwork, setArtwork] = useState<ArtWork | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
+
+	const { setSearchResults, setIsSearchEmpty } = useComps();
+
+	const router = useRouter();
+
+	const navigateToComps = (artwork: Partial<ArtWork>) => {
+		console.log("Navigate to comps ", artwork);
+		setSearchResults(artwork);
+		setIsSearchEmpty(false);
+		router.push("/comps");
+	};
 
 	useEffect(() => {
 		const fetchArtwork = async () => {
@@ -103,6 +116,11 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 						</div>
 					</div>
 				</CardContent>
+				<CardFooter>
+					<Button onClick={() => navigateToComps(artwork as ArtWork)}>
+						Use as comparable
+					</Button>
+				</CardFooter>
 			</Card>
 		</section>
 	);
