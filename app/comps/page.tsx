@@ -212,23 +212,16 @@ const Comps = () => {
 							} rounded-md h-[360px] w-[240px] min-w-[240px}`}
 						>
 							<CardHeader className="relative h-[60%]">
-								{searchResults.img_url ? (
-									<Image
-										src={searchResults.img_url}
-										alt="Artwork Image"
-										priority
-										fill
-										className="w-full rounded-t-md"
-									/>
-								) : (
-									<Image
-										src="https://via.placeholder.com/240x340"
-										alt="Artwork Image"
-										priority
-										fill
-										className="w-full rounded-t-md"
-									/>
-								)}
+								<Image
+									src={
+										searchResults.img_url ||
+										"https://via.placeholder.com/240x340"
+									}
+									alt="Artwork Image"
+									priority
+									fill
+									className="w-full rounded-t-md"
+								/>
 							</CardHeader>
 							<CardContent className="h-full max-h-[40%] scrollbar-hide">
 								<h6 className="text-sm mt-2 ">{searchResults.title}</h6>
@@ -259,7 +252,7 @@ const Comps = () => {
 							>
 								<CardHeader className="relative h-[60%]">
 									<Image
-										src={comp.img_url}
+										src={comp.img_url || "https://via.placeholder.com/240x340"}
 										alt="Comps Image"
 										priority
 										fill
@@ -283,14 +276,13 @@ const Comps = () => {
 						))}
 					</div>
 					<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
-						<Button onClick={pricingHandler} disabled={isDisabled}>
+						<Button onClick={pricingHandler} disabled={!isDisabled}>
 							Send for Pricing
 						</Button>
 						<Button
 							onClick={() => {
 								setSearchResults(defaultValue);
 								setComps([]);
-								setIsCompEmpty(true);
 								setIsSearchEmpty(true);
 							}}
 						>
@@ -499,7 +491,6 @@ const Comps = () => {
 													date_sold: "",
 													img_url: "",
 												});
-												setIsCompEmpty(true);
 											}}
 										>
 											Reset
