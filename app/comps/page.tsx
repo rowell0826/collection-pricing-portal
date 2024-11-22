@@ -4,28 +4,14 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { db } from "@/lib/firebase/firebase";
 import { ArtWork } from "@/lib/types/artworkTypes";
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { showAlert } from "@/lib/helperFunc";
 import { Sidebar, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-
-export interface Comp {
-	artist_full_name: string;
-	title: string;
-	medium: string;
-	date_of_creation: number | "";
-	date_sold: number | "";
-	length: number | "";
-	width: number | "";
-	height: number | "";
-	sale_price: number | "";
-	img_url: string;
-}
+import { useComps } from "@/lib/context/compsContext/ComparablesContext";
 
 const defaultValue: Partial<ArtWork> = {
 	title: "",
@@ -35,138 +21,34 @@ const defaultValue: Partial<ArtWork> = {
 };
 
 const Comps = () => {
-	const [title, setTitle] = useState<string>("");
-	const [id, setId] = useState<string>("");
-	const [artist, setArtist] = useState<string>("");
-	const [searchResults, setSearchResults] = useState<Partial<ArtWork>>(defaultValue);
-	const [isSearchEmpty, setIsSearchEmpty] = useState<boolean>(true);
-	const [isCompEmpty, setIsCompEmpty] = useState<boolean>(true);
 	const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-	// Comps state handlers
-	const [comps, setComps] = useState<Comp[]>([]);
-	const [compTitle, setCompTitle] = useState<string>("");
-	const [compArtist, setCompArtist] = useState<string>("");
-	const [compMedium, setCompMedium] = useState<string>("");
-	const [compCreation, setCompCreation] = useState<number | "">("");
-	const [compDateSold, setCompDateSold] = useState<number | "">("");
-	const [compPrice, setCompPrice] = useState<number | "">("");
-	const [compLength, setCompLength] = useState<number | "">("");
-	const [compHeight, setCompHeight] = useState<number | "">("");
-	const [compWidth, setCompWidth] = useState<number | "">("");
-	const [compImg, setCompImg] = useState<string>("");
+	const {
+		title,
+		setTitle,
+		artist,
+		setArtist,
+		id,
+		setId,
+		searchResults,
+		isSearchEmpty,
+		comps,
+		compFields,
+		isAddEnabled,
+		searchHandler,
+		handleAddComparison,
+		handleInputChange,
+		setIsSearchEmpty,
+		setSearchResults,
+		setComps,
+		setCompFields,
+	} = useComps();
 
 	const currentYear = new Date().getFullYear();
 
-	useEffect(() => {
-		const storedSearchResults = localStorage.getItem("searchResults");
-		const storedComps = localStorage.getItem("comps");
-
-		if (storedSearchResults) {
-			setSearchResults(JSON.parse(storedSearchResults));
-			setIsSearchEmpty(false);
-		}
-		if (storedComps) {
-			setComps(JSON.parse(storedComps));
-			setIsCompEmpty(false);
-		}
-	}, []);
-
-	useEffect(() => {
-		if (!isSearchEmpty) {
-			localStorage.setItem("searchResults", JSON.stringify(searchResults));
-		} else {
-			localStorage.removeItem("searchResults");
-		}
-	}, [searchResults, isSearchEmpty]);
-
-	useEffect(() => {
-		if (!isCompEmpty) {
-			localStorage.setItem("comps", JSON.stringify(comps));
-		} else {
-			localStorage.removeItem("comps");
-		}
-	}, [comps, isCompEmpty]);
-
-	const searchHandler = async () => {
-		try {
-			const artworkRef = collection(db, "artworks");
-			let q;
-
-			if (title) {
-				q = query(
-					artworkRef,
-					where("title", ">=", title),
-					where("title", "<=", title + "\uf8ff")
-				);
-			} else if (artist) {
-				q = query(
-					artworkRef,
-					where("artist_full_name", ">=", artist),
-					where("artist_full_name", "<=", artist + "\uf8ff")
-				);
-			} else if (id) {
-				q = query(artworkRef, where("id", "==", id));
-			}
-
-			if (q) {
-				const querySnapshot = await getDocs(q);
-				if (!querySnapshot.empty) {
-					const doc = querySnapshot.docs[0];
-					setSearchResults({ id: doc.id, ...doc.data() } as ArtWork);
-					setIsSearchEmpty(false);
-				} else {
-					console.log("No matching documents found.");
-					setSearchResults(defaultValue);
-					setIsSearchEmpty(true);
-				}
-			} else {
-				console.log("No query criteria provided.");
-			}
-		} catch (error) {
-			console.error("Error searching for artwork:", error);
-		}
-	};
-
-	const addCompHandler = () => {
-		const newComp = {
-			artist_full_name: compArtist,
-			title: compTitle,
-			medium: compMedium,
-			date_of_creation: compCreation,
-			sale_price: compPrice,
-			length: compLength,
-			width: compWidth,
-			height: compHeight,
-			date_sold: compDateSold,
-			img_url: compImg,
-		};
-		setComps((prevComps) => {
-			const updatedComps =
-				prevComps.length < 3 ? [...prevComps, newComp] : [...prevComps.slice(1), newComp];
-			setIsCompEmpty(false);
-			return updatedComps;
-		});
-
-		setCompTitle("");
-		setCompArtist("");
-		setCompCreation("");
-		setCompImg("");
-		setCompMedium("");
-		setCompPrice(0);
-	};
-
-	const isAddEnabled = useMemo(() => {
-		return (
-			compArtist.trim() !== "" &&
-			compTitle.trim() !== "" &&
-			compMedium.trim() !== "" &&
-			compCreation &&
-			typeof compPrice === "number" &&
-			compPrice > 0 &&
-			compImg.length > 0
-		);
-	}, [compArtist, compTitle, compMedium, compCreation, compPrice, compImg]);
+	const isCompEmpty =
+		comps.length === 0 ||
+		comps.some((comp) => !comp.title || !comp.artist_full_name || !comp.medium);
 
 	// Send artworks and comps to data science gsheet
 	const pricingHandler = async () => {
@@ -492,126 +374,131 @@ const Comps = () => {
 											<Label>Artist Name</Label>
 											<Input
 												id="artist_full_name"
+												name="artist_full_name"
 												className="h-6"
-												value={compArtist}
-												onChange={(e) => setCompArtist(e.target.value)}
+												value={compFields.artist_full_name || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Title</Label>
 											<Input
 												id="title"
+												name="title"
 												className="h-6"
-												value={compTitle}
-												onChange={(e) => setCompTitle(e.target.value)}
+												value={compFields.title || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Medium</Label>
 											<Input
 												id="medium"
+												name="medium"
 												className="h-6"
-												value={compMedium}
-												onChange={(e) => setCompMedium(e.target.value)}
+												value={compFields.medium || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Length</Label>
 											<Input
 												id="length"
+												name="length"
 												className="h-6"
-												value={compLength}
-												onChange={(e) =>
-													setCompLength(Number(e.target.value))
-												}
+												value={compFields.length || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Width</Label>
 											<Input
 												id="width"
+												name="width"
 												className="h-6"
-												value={compWidth}
-												onChange={(e) =>
-													setCompWidth(Number(e.target.value))
-												}
+												value={compFields.width || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Height</Label>
 											<Input
 												id="height"
+												name="height"
 												className="h-6"
-												value={compHeight}
-												onChange={(e) =>
-													setCompHeight(Number(e.target.value))
-												}
+												value={compFields.height}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Art Creation Date</Label>
 											<Input
 												id="art_creation_date"
+												name="date_of_creation"
 												type="number"
 												min={1000}
 												max={Number(currentYear)}
 												className="h-6"
-												value={compCreation}
-												onChange={(e) =>
-													setCompCreation(Number(e.target.value))
-												}
+												value={compFields.date_of_creation}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Sale Price(USD)</Label>
 											<Input
 												id="sale_price"
+												name="sale_price"
 												type="number"
 												className="h-6"
-												value={compPrice}
-												onChange={(e) =>
-													setCompPrice(Number(e.target.value))
-												}
+												value={compFields.sale_price}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Date Sold</Label>
 											<Input
 												id="date_sold"
+												name="date_sold"
 												type="number"
 												min={1900}
 												max={Number(currentYear)}
 												className="h-6"
-												value={compDateSold}
-												onChange={(e) => {
-													setCompDateSold(Number(e.target.value));
-												}}
+												value={compFields.date_sold || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 										<div className="space-y-1">
 											<Label>Image url</Label>
 											<Input
 												id="img_url"
+												name="img_url"
 												className="h-6"
-												value={compImg}
-												onChange={(e) => {
-													setCompImg(e.target.value);
-												}}
+												value={compFields.img_url || ""}
+												onChange={handleInputChange}
 											/>
 										</div>
 									</CardContent>
 									<CardFooter className="flex justify-evenly">
-										<Button onClick={addCompHandler} disabled={!isAddEnabled}>
+										<Button
+											onClick={handleAddComparison}
+											disabled={!isAddEnabled}
+										>
 											Add
 										</Button>
 										<Button
 											onClick={() => {
-												setCompArtist("");
-												setCompCreation("");
-												setCompImg("");
-												setCompMedium("");
-												setCompPrice("");
-												setCompTitle("");
+												setCompFields({
+													artist_full_name: "",
+													title: "",
+													medium: "",
+													date_of_creation: "",
+													sale_price: "",
+													length: "",
+													width: "",
+													height: "",
+													date_sold: "",
+													img_url: "",
+												});
 												setIsCompEmpty(true);
 											}}
 										>
