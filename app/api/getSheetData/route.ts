@@ -25,20 +25,17 @@ export async function GET(request: Request) {
 			throw new Error("Google service account credentials are not available.");
 		}
 
-		// Authenticate with Google Sheets API
 		const auth = new google.auth.GoogleAuth({
 			credentials,
 			scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
 		});
 		const sheets = google.sheets({ version: "v4", auth });
 
-		// Fetch data from the Google Sheet using the provided range
 		const response = await sheets.spreadsheets.values.get({
 			spreadsheetId,
 			range,
 		});
 
-		// Return the fetched data as JSON
 		return new Response(JSON.stringify(response.data.values), {
 			headers: {
 				"Content-Type": "application/json",
@@ -46,7 +43,6 @@ export async function GET(request: Request) {
 			status: 200,
 		});
 	} catch (error) {
-		// Log and return the error if something goes wrong
 		console.error("Error:", error);
 
 		return new Response(
