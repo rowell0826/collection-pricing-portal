@@ -25,7 +25,6 @@ const ViewArt: React.FC<ViewArtProps> = ({ artworkId }) => {
 	const router = useRouter();
 
 	const navigateToComps = (artwork: Partial<ArtWork>) => {
-		console.log("Navigate to comps ", artwork);
 		setSearchResults(artwork);
 		setIsSearchEmpty(false);
 		router.push("/comps");

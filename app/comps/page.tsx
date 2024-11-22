@@ -194,8 +194,6 @@ const Comps = () => {
 		}
 	};
 
-	console.log("Search Result ", searchResults);
-
 	return (
 		<SidebarProvider>
 			<div className="flex w-screen h-screen">
