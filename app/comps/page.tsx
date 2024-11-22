@@ -206,74 +206,96 @@ const Comps = () => {
 				</div>
 				<div className="w-full flex flex-col">
 					<div className="h-screen flex justify-center items-center gap-4">
-						<Card
-							className={`${
-								isSearchEmpty ? "hidden" : ""
-							} rounded-md h-[360px] w-[240px] min-w-[240px}`}
-						>
-							<CardHeader className="relative h-[60%]">
-								<Image
-									src={
-										searchResults.img_url ||
-										"https://via.placeholder.com/240x340"
-									}
-									alt="Artwork Image"
-									priority
-									fill
-									className="w-full rounded-t-md"
-								/>
-							</CardHeader>
-							<CardContent className="h-full max-h-[40%] scrollbar-hide">
-								<h6 className="text-sm mt-2 ">{searchResults.title}</h6>
-								<p className="text-xs mt-2 max-h-[30px] overflow-y-scroll scrollbar-hide">
-									Created by {searchResults.artist_full_name}
-								</p>
+						<div className="flex flex-col justify-center items-center">
+							<h2 className={`text-center ${isSearchEmpty ? "hidden" : ""}`}>
+								Artwork Input
+							</h2>
 
-								<p className="text-xs max-h-[50px] scrollbar-hide overflow-y-scroll">
-									Medium: {searchResults.medium}
-								</p>
-
-								<p className="text-xs">
-									Created:{" "}
-									{Number.isNaN(searchResults.date_of_creation)
-										? ""
-										: searchResults.date_of_creation}
-								</p>
-							</CardContent>
-						</Card>
-
-						{/* Comps */}
-						{comps.map((comp, index) => (
 							<Card
-								key={index}
 								className={`${
-									isCompEmpty ? "hidden" : ""
-								} rounded-md h-[360px] w-[240px] min-w-[240px]`}
+									isSearchEmpty ? "hidden" : ""
+								} rounded-md h-[360px] w-[240px] min-w-[240px}`}
 							>
 								<CardHeader className="relative h-[60%]">
 									<Image
-										src={comp.img_url || "https://via.placeholder.com/240x340"}
-										alt="Comps Image"
+										src={
+											searchResults.img_url ||
+											"https://via.placeholder.com/240x340"
+										}
+										alt="Artwork Image"
 										priority
 										fill
 										className="w-full rounded-t-md"
 									/>
 								</CardHeader>
-								<CardContent className="h-full max-h-[40%] overflow-y-scroll scrollbar-hide">
-									<h6 className="text-sm mt-2">{comp.title}</h6>
-									<p className="text-xs mt-2">
-										Created by {comp.artist_full_name}
+								<CardContent className="h-full max-h-[40%] scrollbar-hide">
+									<h6 className="text-sm mt-2 ">{searchResults.title}</h6>
+									<p className="text-xs mt-2 max-h-[30px] overflow-y-scroll scrollbar-hide">
+										Created by {searchResults.artist_full_name}
 									</p>
+
 									<p className="text-xs max-h-[50px] scrollbar-hide overflow-y-scroll">
-										Medium: {comp.medium}
+										Medium: {searchResults.medium}
 									</p>
-									<p className="text-xs">Created: {comp.date_of_creation}</p>
-									<span className="text-[0.6rem]">
-										Sale Price: {`${comp.sale_price} usd`}
-									</span>
+
+									<p className="text-xs">
+										Created:{" "}
+										{Number.isNaN(searchResults.date_of_creation)
+											? ""
+											: searchResults.date_of_creation}
+									</p>
 								</CardContent>
 							</Card>
-						))}
+						</div>
+
+						{/* Comps */}
+						<div className="flex flex-col justify-start items-center">
+							{comps && (
+								<>
+									<h2 className={`text-center ${isCompEmpty ? "hidden" : ""}`}>
+										Comparables
+									</h2>
+									<div className="flex justify-evenly items-center gap-4">
+										{comps.map((comp, index) => (
+											<Card
+												key={index}
+												className={`${
+													isCompEmpty ? "hidden" : ""
+												} rounded-md h-[360px] w-[240px] min-w-[240px]`}
+											>
+												<CardHeader className="relative h-[60%]">
+													<Image
+														src={
+															comp.img_url ||
+															"https://via.placeholder.com/240x340"
+														}
+														alt="Comps Image"
+														priority
+														fill
+														className="w-full rounded-t-md"
+													/>
+												</CardHeader>
+												<CardContent className="h-full max-h-[40%] overflow-y-scroll scrollbar-hide">
+													<h6 className="text-sm mt-2">{comp.title}</h6>
+													<p className="text-xs mt-2">
+														Created by {comp.artist_full_name}
+													</p>
+													<p className="text-xs max-h-[50px] scrollbar-hide overflow-y-scroll">
+														Medium: {comp.medium}
+													</p>
+													<p className="text-xs">
+														Created: {comp.date_of_creation}
+													</p>
+													<span className="text-[0.6rem]">
+														Sale Price: {`${comp.sale_price} usd`}
+													</span>
+												</CardContent>
+											</Card>
+										))}
+									</div>
+								</>
+							)}
+						</div>
 					</div>
 					<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
 						<Button onClick={pricingHandler} disabled={isDisabled}>
