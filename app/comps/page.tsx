@@ -44,6 +44,8 @@ const Comps = () => {
 		setCompFields,
 	} = useComps();
 
+	console.log("is disabled: ", isDisabled);
+
 	const currentYear = new Date().getFullYear();
 
 	const isCompEmpty =
@@ -69,6 +71,8 @@ const Comps = () => {
 		} = searchResults;
 
 		const allArtistsMatch = comps.every((comp) => comp.artist_full_name === artist_full_name);
+
+		console.log("All artist match ", allArtistsMatch);
 
 		if (!allArtistsMatch) {
 			showAlert("info", "Artist names do not match across all comps. Aborting operation.");
@@ -276,7 +280,7 @@ const Comps = () => {
 						))}
 					</div>
 					<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
-						<Button onClick={pricingHandler} disabled={!isDisabled}>
+						<Button onClick={pricingHandler} disabled={isDisabled}>
 							Send for Pricing
 						</Button>
 						<Button
