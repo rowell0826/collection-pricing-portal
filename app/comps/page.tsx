@@ -44,8 +44,6 @@ const Comps = () => {
 		setCompFields,
 	} = useComps();
 
-	console.log("is disabled: ", isDisabled);
-
 	const currentYear = new Date().getFullYear();
 
 	const isCompEmpty =
