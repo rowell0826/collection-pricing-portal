@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { showAlert } from "@/lib/helperFunc";
 import { Sidebar, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useComps } from "@/lib/context/compsContext/ComparablesContext";
-import { doc, setDoc, writeBatch } from "firebase/firestore";
+import { doc, writeBatch } from "firebase/firestore";
 import { db, getNextCompGroupId } from "@/lib/firebase/firebase";
 import { CompGroupData } from "@/lib/types/comparablesTypes";
 
