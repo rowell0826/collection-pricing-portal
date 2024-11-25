@@ -12,6 +12,9 @@ import { useEffect, useState } from "react";
 import { showAlert } from "@/lib/helperFunc";
 import { Sidebar, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useComps } from "@/lib/context/compsContext/ComparablesContext";
+import { doc, setDoc, writeBatch } from "firebase/firestore";
+import { db, getNextCompGroupId } from "@/lib/firebase/firebase";
+import { CompGroupData } from "@/lib/types/comparablesTypes";
 
 const defaultValue: Partial<ArtWork> = {
 	title: "",
@@ -70,7 +73,7 @@ const Comps = () => {
 					throw new Error(`Error ${res.status}: ${res.statusText}`);
 				}
 
-				const data = await res.text();
+				const data = await res.json();
 
 				setGSHeetData(data);
 			} catch (error: unknown) {
@@ -90,6 +93,8 @@ const Comps = () => {
 	// POST Send artworks and comps to data science gsheet
 	const pricingHandler = async () => {
 		setIsDisabled(true);
+
+		const newCompGroupId = await getNextCompGroupId();
 
 		const {
 			title,
@@ -161,6 +166,33 @@ const Comps = () => {
 				console.error("Error response:", textResponse);
 			}
 
+			const batch = writeBatch(db);
+			const compsRef = doc(db, "comps", String(newCompGroupId));
+			const compInputs: CompGroupData = {
+				id: newCompGroupId,
+				artwork: {
+					id: searchResults.id,
+					title: searchResults.title,
+					artist_full_name: searchResults.artist_full_name,
+					artist_birth: searchResults.artist_birth,
+					date_of_creation: searchResults.date_of_creation,
+					dimensions: {
+						length: searchResults.dimensions?.length,
+						width: searchResults.dimensions?.width,
+						height: searchResults.dimensions?.height,
+					},
+					medium: searchResults.medium,
+					description: searchResults.description,
+					provenance: searchResults.provenance,
+					img_url: searchResults.img_url,
+					aspect_ratio: searchResults.aspect_ratio,
+					area: searchResults.area,
+				} as ArtWork,
+				comps: comps,
+				calculated_price: Number(gSheetData),
+				date_created: new Date(),
+			};
+
 			for (let i = 0; i < comps.length; i++) {
 				const comp = comps[i];
 				const range = `comp_${i + 1}!A2:I2`; //  comp_1, comp_2, comp_3 based on the index iteration
@@ -176,7 +208,7 @@ const Comps = () => {
 					comp.img_url,
 				];
 
-				const compResponse = await fetch("/api/appendData", {
+				await fetch("/api/appendData", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
@@ -185,21 +217,12 @@ const Comps = () => {
 						values: [compData],
 					}),
 				});
-
-				const compTextResponse = await compResponse.text();
-
-				if (compResponse.ok) {
-					try {
-						JSON.parse(compTextResponse);
-					} catch (jsonError) {
-						console.error("Error parsing JSON:", jsonError);
-					}
-				} else {
-					console.error("Error response:", compTextResponse);
-				}
 			}
 
-			const compsResponseToSrDataMgr = await fetch("/api/appendData", {
+			batch.set(compsRef, compInputs);
+			batch.commit();
+
+			await fetch("/api/appendData", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -209,17 +232,6 @@ const Comps = () => {
 				}),
 			});
 
-			const compsTextResponseToSrDataMgr = await compsResponseToSrDataMgr.text();
-
-			if (compsResponseToSrDataMgr.ok) {
-				try {
-					JSON.parse(compsTextResponseToSrDataMgr);
-				} catch (error) {
-					console.error("Error parsing JSON:", error);
-				}
-			} else {
-				console.error("Error response:", compsTextResponseToSrDataMgr);
-			}
 			showAlert("success", "Data has been sent");
 		} catch (error) {
 			console.error("Network or unexpected error:", error);

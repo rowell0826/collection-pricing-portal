@@ -7,7 +7,7 @@ import {
 	signInWithPopup,
 	signOut,
 } from "firebase/auth";
-import { doc, Firestore, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, Firestore, getDoc, getFirestore, runTransaction, setDoc } from "firebase/firestore";
 import { UserDetails } from "../types/authTypes";
 import Swal from "sweetalert2";
 
@@ -126,3 +126,33 @@ export const getUserDetails = async (userId: string) => {
 export const signOutUser = async (): Promise<void> => await signOut(auth);
 
 // ---------------------------- Artwork Collection -----------------------------
+
+// ---------------------------- ID Generator ----------------------------------
+// Created fire-based id generator for global consistency and data persistence
+export const getNextCompGroupId = async (): Promise<number> => {
+	const counterDocRef = doc(db, "compIdCounters", "compGroupCounter");
+
+	try {
+		const newId = await runTransaction(db, async (transaction) => {
+			const counterDoc = await transaction.get(counterDocRef);
+
+			if (!counterDoc.exists()) {
+				// Initialize counter if it doesn't exist
+				transaction.set(counterDocRef, { count: 1 });
+				return 1;
+			}
+
+			// Increment the counter
+			const currentCount = counterDoc.data().count;
+			const newCount = currentCount + 1;
+			transaction.update(counterDocRef, { count: newCount });
+
+			return newCount;
+		});
+
+		return newId;
+	} catch (error) {
+		console.error("Error generating ID:", error);
+		throw new Error("Failed to generate ID");
+	}
+};

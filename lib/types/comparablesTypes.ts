@@ -46,7 +46,7 @@ export interface CompGroup {
 	calculated_price: number;
 }
 
-export interface CompData {
+export interface CompGroupData {
 	id: number;
 	date_created: object;
 	artwork: ArtWork;
