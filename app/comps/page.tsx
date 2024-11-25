@@ -8,7 +8,7 @@ import { ArtWork } from "@/lib/types/artworkTypes";
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { showAlert } from "@/lib/helperFunc";
 import { Sidebar, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useComps } from "@/lib/context/compsContext/ComparablesContext";
@@ -22,6 +22,9 @@ const defaultValue: Partial<ArtWork> = {
 
 const Comps = () => {
 	const [isDisabled, setIsDisabled] = useState<boolean>(false);
+	const [gSheetData, setGSHeetData] = useState<string[][]>([]);
+	const [error, setError] = useState<string | null>(null);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	const {
 		title,
@@ -50,7 +53,36 @@ const Comps = () => {
 		comps.length === 0 ||
 		comps.some((comp) => !comp.title || !comp.artist_full_name || !comp.medium);
 
-	// Send artworks and comps to data science gsheet
+	// Fetch from api/getSheetData
+	useEffect(() => {
+		const fetchGsheet = async () => {
+			const spreadsheetId = process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID;
+			const range = "price!A2";
+
+			try {
+				const res = await fetch(
+					`/api/getSheetData?spreadsheetId=${spreadsheetId}&range=${encodeURIComponent(
+						range
+					)}`
+				);
+				const data = await res.json();
+
+				setGSHeetData(data);
+			} catch (error: unknown) {
+				if (error instanceof Error) {
+					setError(error.message);
+				} else {
+					setError("An unexpected error occurred");
+				}
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchGsheet();
+	}, []);
+
+	// POST Send artworks and comps to data science gsheet
 	const pricingHandler = async () => {
 		setIsDisabled(true);
 
@@ -194,6 +226,9 @@ const Comps = () => {
 		}
 	};
 
+	if (loading) return <p>Loading...</p>;
+	if (error) return <p>Error: {error}</p>;
+
 	return (
 		<SidebarProvider>
 			<div className="flex w-screen h-screen">
@@ -297,6 +332,16 @@ const Comps = () => {
 							)}
 						</div>
 					</div>
+					{gSheetData ? (
+						<div className="flex justify-center items-center py-4">
+							Calculated Price: {gSheetData}
+						</div>
+					) : comps ? (
+						"Waiting to be priced"
+					) : (
+						""
+					)}
+
 					<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
 						<Button onClick={pricingHandler} disabled={isDisabled}>
 							Send for Pricing
