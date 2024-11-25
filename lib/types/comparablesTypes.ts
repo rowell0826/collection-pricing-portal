@@ -35,3 +35,21 @@ export interface CompsContextType {
 	handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	handleAddComparison: () => void;
 }
+
+export interface CompGroup {
+	id: string;
+	artist_full_name: string;
+	art_title: string;
+	comp1_art_title: string;
+	comp2_art_title: string;
+	comp3_art_title: string;
+	calculated_price: number;
+}
+
+export interface CompData {
+	id: number;
+	date_created: object;
+	artwork: ArtWork;
+	comps: Comp[];
+	calculated_price: number;
+}

@@ -22,7 +22,7 @@ const defaultValue: Partial<ArtWork> = {
 
 const Comps = () => {
 	const [isDisabled, setIsDisabled] = useState<boolean>(false);
-	const [gSheetData, setGSHeetData] = useState<string[][]>([]);
+	const [gSheetData, setGSHeetData] = useState<string>("");
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -65,7 +65,12 @@ const Comps = () => {
 						range
 					)}`
 				);
-				const data = await res.json();
+
+				if (!res.ok) {
+					throw new Error(`Error ${res.status}: ${res.statusText}`);
+				}
+
+				const data = await res.text();
 
 				setGSHeetData(data);
 			} catch (error: unknown) {
@@ -329,15 +334,10 @@ const Comps = () => {
 							)}
 						</div>
 					</div>
-					{gSheetData ? (
-						<div className="flex justify-center items-center py-4">
-							Calculated Price: {gSheetData}
-						</div>
-					) : comps ? (
-						"Waiting to be priced"
-					) : (
-						""
-					)}
+
+					<div className="flex justify-center items-center py-4">
+						Calculated Price: {gSheetData}
+					</div>
 
 					<div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-20">
 						<Button onClick={pricingHandler} disabled={isDisabled}>
@@ -348,7 +348,7 @@ const Comps = () => {
 								setSearchResults(defaultValue);
 								setComps([]);
 								setIsSearchEmpty(true);
-								setGSHeetData([]);
+								setGSHeetData("");
 							}}
 						>
 							Reset
