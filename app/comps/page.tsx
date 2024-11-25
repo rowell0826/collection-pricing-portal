@@ -185,8 +185,7 @@ const Comps = () => {
 
 				if (compResponse.ok) {
 					try {
-						const result = JSON.parse(compTextResponse);
-						console.log(result);
+						JSON.parse(compTextResponse);
 					} catch (jsonError) {
 						console.error("Error parsing JSON:", jsonError);
 					}
@@ -209,8 +208,7 @@ const Comps = () => {
 
 			if (compsResponseToSrDataMgr.ok) {
 				try {
-					const result = JSON.parse(compsTextResponseToSrDataMgr);
-					console.log(result);
+					JSON.parse(compsTextResponseToSrDataMgr);
 				} catch (error) {
 					console.error("Error parsing JSON:", error);
 				}
