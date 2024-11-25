@@ -148,8 +148,7 @@ const Comps = () => {
 
 			if (response.ok) {
 				try {
-					const result = JSON.parse(textResponse);
-					console.log(result);
+					JSON.parse(textResponse);
 				} catch (jsonError) {
 					console.error("Error parsing JSON:", jsonError);
 				}
@@ -351,6 +350,7 @@ const Comps = () => {
 								setSearchResults(defaultValue);
 								setComps([]);
 								setIsSearchEmpty(true);
+								setGSHeetData([]);
 							}}
 						>
 							Reset
