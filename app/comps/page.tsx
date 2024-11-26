@@ -247,8 +247,8 @@ const Comps = () => {
 	return (
 		<SidebarProvider>
 			<div className="flex w-screen h-full">
-				<div className="h-[10%] flex justify-between items-center">
-					<Button className="ml-4" size={"sm"}>
+				<div className="flex justify-between items-start">
+					<Button className="ml-4 mt-4" size={"sm"}>
 						<Link href={"/"}>
 							<ArrowLeft />
 						</Link>

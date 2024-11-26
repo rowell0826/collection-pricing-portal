@@ -13,6 +13,9 @@ import { ArtWork } from "@/lib/types/artworkTypes";
 import { Comp, CompGroupData } from "@/lib/types/comparablesTypes";
 import { collection, getDocs, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 const CompsResultsTable = () => {
 	const [compData, setCompData] = useState<CompGroupData[]>([]);
@@ -47,7 +50,14 @@ const CompsResultsTable = () => {
 	console.log(`CompData: ${compData}`);
 
 	return (
-		<div className="w-screen relative flex">
+		<div className="w-screen h-full relative flex flex-col items-center">
+			<div className="w-full flex justify-start items-center">
+				<Button className="ml-4 my-4" size={"sm"}>
+					<Link href={"/"}>
+						<ArrowLeft />
+					</Link>
+				</Button>
+			</div>
 			<Table className="w-[80%] justify-self-center mt-4">
 				<TableHeader>
 					<TableRow>
