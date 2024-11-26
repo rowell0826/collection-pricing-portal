@@ -245,7 +245,7 @@ const Comps = () => {
 
 	return (
 		<SidebarProvider>
-			<div className="flex w-screen h-screen">
+			<div className="flex w-screen h-full">
 				<div className="h-[10%] flex justify-between items-center">
 					<Button className="ml-4" size={"sm"}>
 						<Link href={"/"}>
@@ -254,7 +254,7 @@ const Comps = () => {
 					</Button>
 				</div>
 				<div className="w-full flex flex-col">
-					<div className="h-screen flex justify-center items-center gap-4">
+					<div className="h-full flex flex-col justify-start items-center gap-4">
 						<div className="flex flex-col justify-center items-center">
 							<h2 className={`text-center ${isSearchEmpty ? "hidden" : ""}`}>
 								Artwork Input
