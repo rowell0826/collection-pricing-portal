@@ -1,24 +1,6 @@
-/* "use client";
-import { Button } from "@/components/ui/button";
+"use client";
 
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableHeader } from "@/components/ui/table";
 
 const CompsResultsTable = () => {
 	return (
@@ -30,4 +12,3 @@ const CompsResultsTable = () => {
 };
 
 export default CompsResultsTable;
- */
