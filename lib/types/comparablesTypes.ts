@@ -36,17 +36,6 @@ export interface CompsContextType {
 	handleAddComparison: () => void;
 }
 
-export interface CompGroup {
-	id: string;
-	date_created: object;
-	artist_full_name: string;
-	art_title: string;
-	comp1_art_title: string;
-	comp2_art_title: string;
-	comp3_art_title: string;
-	calculated_price: number;
-}
-
 export interface CompGroupData {
 	id: number;
 	date_created: object;

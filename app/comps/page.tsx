@@ -133,7 +133,7 @@ const Comps = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					spreadsheetId: process.env.NEXT_PUBLIC_GOOGLE_SHEET_ID,
-					range: "input_artwork!A2:M2",
+					range: "input_artwork!A2:N2",
 					values: [
 						[
 							artist_full_name,
@@ -149,6 +149,7 @@ const Comps = () => {
 							aspect_ratio,
 							area,
 							validImgUrl,
+							newCompGroupId,
 						],
 					],
 				}),
